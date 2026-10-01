@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A Special Gift for </title>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* --- KODE ANIMASI ASLI KAMU (100% DIKEMBALIKAN KE ASAL) --- */
+        body {
+            background-color: #A2D2FF;
+            animation: change-background 3s infinite linear;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            width: 100vw;
+            height: 100vh;
+        }
+
+        .wrapper {
+            position: absolute;
+            left: 50%;
+            top: 70%;
+            transform: scale(1.5, 1.5) translate(-50%, -50%);
+        }
+
+        .floor {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            width: 350px;
+            height: 5px;
+            background: #673C63;
+            transform: translate(-50%, -50%);
+            box-shadow: 0px 2px 5px #111;
+            z-index: 2;
+        }
+
+        .candles {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            width: 250px;
+            height: 150px;
+            transform: translate(-50%, -100%);
+            z-index: 1;
+        }
+
+        .candle1 {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            width: 35px;
+            height: 100px;
+            background: #fff;
+            border: 3px solid #673C63;
+            border-bottom: 0px;
+            border-radius: 3px;
+            transform-origin: center right;
+            transform: translate(60%, -25%);
+            box-shadow: -2px 0px 0px #95c6f2 inset;
+            animation: expand-body 3s infinite linear;
+        }
+
+        .candle1__stick, .candle2__stick {
+            position: absolute;
+            left: 50%;
+            top: 0%;
+            width: 3px;
+            height: 15px;
+            background: #673C63;
+            border-radius: 8px;
+            transform: translate(-50%, -100%);
+        }
+
+        .candle2__stick {
+            height: 12px;
+            transform-origin: bottom center;
+            animation: stick-animation 3s infinite linear;
+        }
+
+        .candle1__eyes, .candle2__eyes {
+            position: absolute;
+            left: 50%;
+            top: 0%;
+            width: 35px;
+            height: 30px;
+            transform: translate(-50%, 0%);
+        }
+
+        .candle1__eyes-one {
+            position: absolute;
+            left: 30%;
+            top: 20%;
+            width: 5px;
+            height: 5px;
+            border-radius: 100%;
+            background: #673C63;
+            transform: translate(-70%, 0%);
+            animation: blink-eyes 3s infinite linear;
+        }
+
+        .candle1__eyes-two {
+            position: absolute;
+            left: 70%;
+            top: 20%;
+            width: 5px;
+            height: 5px;
+            border-radius: 100%;
+            background: #673C63;
+            transform: translate(-70%, 0%);
+            animation: blink-eyes 3s infinite linear;
+        }
+
+        .candle1__mouth {
+            position: absolute;
+            left: 40%;
+            top: 20%;
+            width: 0px;
+            height: 0px;
+            border-radius: 20px;
+            background: #673C63;
+            transform: translate(-50%, -50%);
+            animation: uff 3s infinite linear;
+        }
+
+        .candle__smoke-one {
+            position: absolute;
+            left: 30%;
+            top: 50%;
+            width: 30px;
+            height: 3px;
+            background: grey;
+            transform: translate(-50%, -50%);
+            animation: move-left 3s infinite linear;
+        }
+
+        .candle__smoke-two {
+            position: absolute;
+            left: 30%;
+            top: 40%;
+            width: 10px;
+            height: 10px;
+            border-radius: 10px;
+            background: grey;
+            transform: translate(-50%, -50%);
+            animation: move-top 3s infinite linear;
+        }
+
+        .candle2 {
+            position: absolute;
+            left: 20%;
+            top: 65%;
+            width: 42px;
+            height: 60px;
+            background: #fff;
+            border: 3px solid #673C63;
+            border-bottom: 0px;
+            border-radius: 3px;
+            transform: translate(60%, -15%);
+            transform-origin: center right;
+            box-shadow: -2px 0px 0px #95c6f2 inset;
+            animation: shake-left 3s infinite linear;
+        }
+
+        .candle2__eyes-one {
+            position: absolute;
+            left: 30%;
+            top: 50%;
+            width: 5px;
+            height: 5px;
+            display: inline-block;
+            border: 0px solid #673C63;
+            border-radius: 100%;
+            float: left;
+            background: #673C63;
+            transform: translate(-80%, 0%);
+            animation: changeto-lower 3s infinite linear;
+        }
+
+        .candle2__eyes-two {
+            position: absolute;
+            left: 70%;
+            top: 50%;
+            width: 5px;
+            height: 5px;
+            display: inline-block;
+            border: 0px solid #673C63;
+            border-radius: 100%;
+            float: left;
+            background: #673C63;
+            transform: translate(-80%, 0%);
+            animation: changeto-greater 3s infinite linear;
+        }
+
+        .light__wave {
+            position: absolute;
+            top: 35%;
+            left: 35%;
+            width: 75px;
+            height: 75px;
+            border-radius: 100%;
+            z-index: 0;
+            transform: translate(-25%, -50%) scale(2.5, 2.5);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            animation: expand-light 3s infinite linear;
+        }
+
+        .candle2__fire {
+            position: absolute;
+            top: 50%;
+            left: 40%;
+            display: block;
+            width: 16px;
+            height: 20px;
+            background-color: red;
+            border-radius: 50% 50% 50% 50%/60% 60% 40% 40%;
+            background: #FF9800;
+            transform: translate(-50%, -50%);
+            animation: dance-fire 3s infinite linear;
+        }
+
+        @keyframes blink-eyes { 0%, 35% { opacity: 1; transform: translate(-70%, 0%); } 36%, 39% { opacity: 0; transform: translate(-70%, 0%); } 40% { opacity: 1; transform: translate(-70%, 0%); } 50%, 65% { transform: translate(-140%, 0%); } 66% { transform: translate(-70%, 0%); } }
+        @keyframes expand-body { 0%, 40% { transform: scale(1, 1) translate(60%, -25%); } 45%, 55% { transform: scale(1.1, 1.1) translate(60%, -28%); } 60% { transform: scale(0.89, 0.89) translate(60%, -25%); } 65% { transform: scale(1, 1) translate(60%, -25%); } 70% { transform: scale(0.95, 0.95) translate(60%, -25%); } 75% { transform: scale(1, 1) translate(60%, -25%); } }
+        @keyframes uff { 0%, 40% { width: 0px; height: 0px; } 50%, 54% { width: 15px; height: 15px; left: 30%; } 59% { width: 5px; height: 5px; left: 20%; } 62% { width: 2px; height: 2px; left: 20%; } 67% { width: 0px; height: 0px; left: 30%; } }
+        @keyframes change-background { 0%, 59%, 98%, 100% { background: #A2D2FF; } 61%, 97% { background: #053a6c; } }
+        @keyframes move-left { 0%, 59%, 100% { width: 0px; left: 40%; } 60% { width: 30px; left: 30%; } 68% { width: 0px; left: 20%; } }
+        @keyframes move-top { 0%, 64%, 100% { width: 0px; height: 0px; top: 0%; } 65% { width: 10px; height: 10px; top: 40%; left: 40%; } 80% { width: 0px; height: 0px; top: 20%; } }
+        @keyframes shake-left { 0%, 40% { left: 20%; transform: translate(60%, -15%); } 50%, 54% { left: 20%; transform: translate(60%, -15%); } 59% { left: 20%; transform: translate(60%, -15%); } 62% { left: 18%; transform: translate(60%, -15%); } 65% { left: 21%; transform: translate(60%, -15%); } 67% { left: 20%; transform: translate(60%, -15%); } 75% { left: 20%; transform: scale(1.15, 0.85) translate(60%, -15%); background: #fff; border-color: #673C63; } 91% { left: 20%; transform: scale(1.18, 0.82) translate(60%, -10%); background: #F44336; border-color: #F44336; box-shadow: -2px 0px 0px #F44336 inset; } 92% { left: 20%; transform: scale(0.85, 1.15) translate(60%, -15%); } 95% { left: 20%; transform: scale(1.05, 0.95) translate(60%, -15%); } 97% { left: 20%; transform: scale(1, 1) translate(60%, -15%); } }
+        @keyframes stick-animation { 0%, 40% { left: 50%; top: 0%; transform: translate(-50%, -100%); } 50%, 54% { left: 50%; top: 0%; transform: translate(-50%, -100%); } 59% { left: 50%; top: 0%; transform: translate(-50%, -100%); } 62% { left: 50%; top: 0%; transform: rotateZ(-15deg) translate(-50%, -100%); } 65% { left: 50%; top: 0%; transform: rotateZ(15deg) translate(-50%, -100%); } 70% { left: 50%; top: 0%; transform: rotateZ(-5deg) translate(-50%, -100%); } 72% { left: 50%; top: 0%; transform: rotateZ(5deg) translate(-50%, -100%); } 74%, 84% { left: 50%; top: 0%; transform: rotateZ(0deg) translate(-50%, -100%); } 85% { transform: rotateZ(180deg) translate(0%, 120%); } 92% { left: 50%; top: 0%; transform: translate(-50%, -100%); } }
+        @keyframes expand-light { 10%, 29%, 59%, 89% { transform: translate(-25%, -50%) scale(0, 0); border: 2px solid rgba(255, 255, 255, 0); } 90%, 20%, 50% { transform: translate(-25%, -50%) scale(1, 1); } 95%, 96%, 26%, 27%, 56%, 57% { transform: translate(-25%, -50%) scale(2, 2); border: 2px solid rgba(255, 255, 255, 0.5); } 0%, 28%, 58%, 100% { transform: translate(-25%, -50%) scale(2.5, 2.5); border: 2px solid rgba(255, 255, 255, 0.2); } }
+        @keyframes dance-fire { 59%, 89% { left: 40%; width: 0px; height: 0px; } 90%, 0%, 7%, 15%, 23%, 31%, 39%, 47%, 55% { left: 40.8%; width: 16px; height: 20px; background: #FFC107; } 94%, 3%, 11%, 19%, 27%, 35%, 43%, 51%, 58% { left: 41.2%; width: 16px; height: 20px; background: #FF9800; } }
+        @keyframes changeto-lower { 0%, 70%, 90% { padding: 0px; display: inline-block; border-radius: 100%; background: #673C63; border-width: 0 0 0 0; border: 0px solid #673C63; transform: translate(-90%, 0%); } 71%, 89% { background: none; border: solid #673C63; border-radius: 0px; border-width: 0 2px 2px 0; display: inline-block; padding: 1px; float: left; transform-origin: bottom left; transform: rotate(-45deg) translate(-50%, -65%); -webkit-transform: rotate(-45deg) translate(-50%, -65%); } }
+        @keyframes changeto-greater { 0%, 70%, 90% { top: 50%; padding: 0px; display: inline-block; border-radius: 100%; background: #673C63; border-width: 0 0 0 0; border: 0px solid #673C63; transform: translate(-80%, 0%); } 71%, 89% { top: 30%; background: none; border: solid #673C63; border-radius: 0px; border-width: 0 2px 2px 0; display: inline-block; padding: 1px; float: left; transform-origin: bottom left; transform: rotate(135deg) translate(-80%, 20%); -webkit-transform: rotate(135deg) translate(-80%, 20%); } }
+
+        /* LOADING TEXT DECORATION */
+        .loading-text {
+            position: absolute;
+            bottom: 15%; /* Biar posisinya di bawah lilin */
+            left: 50%;
+            transform: translateX(-50%);
+            font-family: 'Quicksand', sans-serif;
+            font-weight: 600;
+            color: #673C63; /* Warna senada dengan lilin */
+            letter-spacing: 5px;
+            text-transform: uppercase;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        /* Efek gelombang pada huruf Loading */
+        .loading-text span {
+            display: inline-block;
+            animation: wave 1.5s infinite ease-in-out;
+        }
+
+        .loading-text span:nth-child(2) { animation-delay: 0.1s; }
+        .loading-text span:nth-child(3) { animation-delay: 0.2s; }
+        .loading-text span:nth-child(4) { animation-delay: 0.3s; }
+        .loading-text span:nth-child(5) { animation-delay: 0.4s; }
+        .loading-text span:nth-child(6) { animation-delay: 0.5s; }
+        .loading-text span:nth-child(7) { animation-delay: 0.6s; }
+
+        /* Animasi titik-titik (dots) */
+        .dots {
+            display: flex;
+            gap: 3px;
+        }
+
+        .dot {
+            width: 6px;
+            height: 6px;
+            background-color: #673C63;
+            border-radius: 50%;
+            animation: bounce 1.5s infinite ease-in-out;
+        }
+
+        .dot:nth-child(2) { animation-delay: 0.2s; }
+        .dot:nth-child(3) { animation-delay: 0.4s; }
+
+        @keyframes wave {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); color: #4895ef; } /* Berubah sedikit ke biru saat melompat */
+        }
+
+        @keyframes bounce {
+            0%, 80%, 100% { transform: scale(0); }
+            40% { transform: scale(1); }
+        }
+
+        /* --- DEKORASI BAGIAN KEDUA (MAIN CONTENT - FIT SCREEN) --- */
+        #intro-screen {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 999; transition: opacity 1s ease-out;
+        }
+
+        #main-content {
+            display: none; opacity: 0;
+            background: #A2D2FF;
+            background-image: radial-gradient(#ffffff 1px, transparent 1px);
+            background-size: 30px 30px;
+            width: 100vw; height: 100vh; position: fixed; top: 0; left: 0;
+            padding: 20px; box-sizing: border-box; transition: opacity 1.5s ease;
+            text-align: center; font-family: 'Quicksand', sans-serif;
+            overflow: hidden; display: flex; flex-direction: column;
+            justify-content: center; align-items: center;
+        }
+
+        .container { width: 100%; max-width: 500px; position: relative; }
+
+        h1 { 
+            font-family: 'Pacifico', cursive; color: white; 
+            font-size: clamp(2rem, 8vw, 3rem); 
+            text-shadow: 4px 4px 0px rgba(72, 149, 239, 0.5); margin-bottom: 5px;
+        }
+
+        .subtitle { color: white; font-weight: 700; margin-bottom: 30px; letter-spacing: 1px; font-size: 0.9rem; }
+
+        /* Playlist Wrapper */
+        .playlist-wrapper {
+            background: rgba(255, 255, 255, 0.4); backdrop-filter: blur(10px);
+            border: 2px solid white; border-radius: 50px; padding: 10px 25px;
+            display: flex; align-items: center; justify-content: space-between;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1); margin-bottom: 40px; width: 100%; box-sizing: border-box;
+        }
+        .song-info { text-align: left; }
+        .song-info b { display: block; color: #2c3e50; font-size: 1rem; }
+        .song-info small { color: #576574; font-weight: 600; font-size: 0.75rem; }
+        .btn-music {
+            background: white; border: none; width: 45px; height: 45px;
+            border-radius: 50%; color: #4895ef; font-size: 1.2rem; cursor: pointer;
+        }
+
+        /* CUSTOM CSS ICONS */
+        .icon-box {
+            width: 75px; height: 75px; margin: 0 auto 15px;
+            display: flex; align-items: center; justify-content: center;
+            background: #f0f8ff; border-radius: 22px;
+        }
+        .envelope {
+            width: 40px; height: 26px; background: #4895ef; position: relative; border-radius: 3px;
+        }
+        .envelope::after {
+            content: ''; position: absolute; top: 0; left: 0;
+            border-left: 20px solid transparent; border-right: 20px solid transparent;
+            border-top: 16px solid white;
+        }
+        .star-css {
+            margin: 0 auto; position: relative; display: block; color: #FFD93D; width: 0px; height: 0px;
+            border-right: 28px solid transparent; border-bottom: 20px solid #FFD93D; border-left: 28px solid transparent; transform: rotate(35deg);
+        }
+        .star-css:before {
+            border-bottom: 22px solid #FFD93D; border-left: 8px solid transparent; border-right: 8px solid transparent;
+            position: absolute; height: 0; width: 0; top: -13px; left: -18px; display: block; content: ''; transform: rotate(-35deg);
+        }
+        .star-css:after {
+            position: absolute; display: block; top: 1px; left: -29px; width: 0px; height: 0px;
+            border-right: 28px solid transparent; border-bottom: 20px solid #FFD93D; border-left: 28px solid transparent; transform: rotate(-70deg); content: '';
+        }
+
+        /* Menu Grid */
+        .menu-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; width: 100%; }
+        .menu-item {
+            background: white; border-radius: 28px; padding: 25px 10px;
+            cursor: pointer; transition: 0.3s; box-shadow: 0 8px 15px rgba(0,0,0,0.05);
+            border-bottom: 6px solid #BDE0FE;
+        }
+        .menu-item:hover { transform: translateY(-8px); }
+        .menu-item span { font-weight: 700; color: #4895ef; text-transform: uppercase; font-size: 0.75rem; }
+
+        /* MODAL STYLING DENGAN SCROLLBAR DI DALAM */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(44, 62, 80, 0.6); backdrop-filter: blur(8px);
+            display: none; justify-content: center; align-items: center; z-index: 1000;
+        }
+        .modal-card {
+            background: white; 
+            background-image: linear-gradient(#f1f1f1 1px, transparent 1px);
+            background-size: 100% 2.5rem;
+            width: 85%; max-width: 380px; padding: 50px 25px 30px 25px;
+            border-radius: 35px; position: relative; transform: scale(0.8);
+            transition: 0.4s; opacity: 0; box-shadow: 0 25px 50px rgba(0,0,0,0.3);
+            border: 8px solid #ffffff; outline: 2px dashed #A2D2FF; outline-offset: -12px;
+            
+            /* INTERNAL SCROLLBAR LOGIC */
+            max-height: 60vh;
+            overflow-y: auto;
+            scrollbar-width: thin;
+            scrollbar-color: #A2D2FF transparent;
+        }
+        .modal-overlay.active { display: flex; }
+        .modal-overlay.active .modal-card { transform: scale(1); opacity: 1; }
+
+        /* Custom Scrollbar Modal (Chrome/Safari) */
+        .modal-card::-webkit-scrollbar { width: 6px; }
+        .modal-card::-webkit-scrollbar-track { background: transparent; margin: 20px; }
+        .modal-card::-webkit-scrollbar-thumb { background: #A2D2FF; border-radius: 10px; }
+
+        .modal-card h3 { font-family: 'Pacifico', cursive; color: #4895ef; font-size: 2rem; margin-top: 0; }
+        .modal-card p { line-height: 1.8; color: #576574; font-weight: 600; text-align: left; padding-bottom: 20px; }
+        .close-btn { position: absolute; top: 12px; right: 18px; font-size: 2rem; color: #cbd5e0; cursor: pointer; z-index: 10; }
+
+        /* --- MOBILE RESPONSIVE OPTIMIZATION --- */
+        @media (max-width: 480px) {
+            .wrapper {
+                transform: scale(1.1, 1.1) translate(-45%, -50%);
+            }
+            #main-content {
+                padding: 15px;
+            }
+            .modal-card {
+                width: 90%;
+                padding: 40px 18px 20px 18px;
+                max-height: 75vh;
+            }
+            .menu-item {
+                padding: 18px 8px;
+            }
+            h1 {
+                font-size: 2.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="intro-screen">
+        <div class="wrapper">
+            <div class="candles">
+                <div class="light__wave"></div>
+                <div class="candle1">
+                    <div class="candle1__body">
+                        <div class="candle1__eyes">
+                            <span class="candle1__eyes-one"></span>
+                            <span class="candle1__eyes-two"></span>
+                        </div>
+                        <div class="candle1__mouth"></div>
+                    </div>
+                    <div class="candle1__stick"></div>
+                </div>
+                <div class="candle2">
+                    <div class="candle2__body">
+                        <div class="candle2__eyes">
+                            <div class="candle2__eyes-one"></div>
+                            <div class="candle2__eyes-two"></div>
+                        </div>
+                    </div>
+                    <div class="candle2__stick"></div>
+                </div>
+                <div class="candle2__fire"></div>
+                <div class="sparkles-one"></div>
+                <div class="sparkles-two"></div>
+                <div class="candle__smoke-one"></div>
+                <div class="candle__smoke-two"></div>
+            </div>
+            <div class="floor"></div>
+            <div class="loading-text" style="margin-bottom: 150px;">
+                <span>L</span><span>o</span><span>a</span><span>d</span><span>i</span><span>n</span><span>g</span>
+                <div class="dots">
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="main-content">
+        <div class="container">
+            <h1>Just For You</h1>
+            <p class="subtitle">A SPECIAL GIFT FOR Someone 🩵</p>
+
+            <div class="playlist-wrapper">
+                <div class="song-info">
+                    <b>Blue</b>
+                    <small>Yung Kay</small>
+                </div>
+                <button class="btn-music" onclick="toggleMusic()" id="playBtn">▶</button>
+            </div>
+
+            <audio id="myMusic" loop>
+                <source src="yung kai - blue (Lyrics).mp3" type="audio/mpeg">
+            </audio>
+
+            <div class="menu-grid">
+                <div class="menu-item" onclick="openModal('modalLetter')">
+                    <div class="icon-box">
+                        <div class="envelope"></div>
+                    </div>
+                    <span>A Special Letter</span>
+                </div>
+                <div class="menu-item" onclick="openModal('modalWishes')">
+                    <div class="icon-box">
+                        <div class="star-css"></div>
+                    </div>
+                    <span>Little Thoughts</span>
+                </div>
+            </div>
+
+            <p style="color: white; opacity: 0.9; font-size: 0.8rem; margin-top: 50px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px;">
+                Tap the cards to open
+            </p>
+        </div>
+    </div>
+
+    <div id="modalLetter" class="modal-overlay" onclick="closeModal(event, 'modalLetter')">
+        <div class="modal-card" onclick="event.stopPropagation()">
+            <span class="close-btn" onclick="document.getElementById('modalLetter').classList.remove('active')">&times;</span>
+            <h3>Dear Someone... ✉️</h3>
+            <p>
+                Teruntuk pemilik mata indah yang diam-diam mampu membuat dunia terasa jauh lebih tenang.
+<br>
+Entah sejak kapan, aku mulai jatuh pada cara matamu memandang semesta. Ada sesuatu di sana—suatu kehangatan yang terlalu luas untuk dijelaskan oleh kata-kata biasa. Seolah setiap tatapanmu menyimpan sebuah rumah bagi jiwa-jiwa yang lelah, tempat seseorang bisa berlabuh sejenak tanpa pernah takut dihakimi oleh riuh dunia.
+<br>
+Dan aku menyadari, beberapa perasaan memang terlalu megah jika hanya dititipkan lewat larik-larik puisi. Sebab itulah aku membuat ini; menjadikannya sebuah ruang teduh bagi seluruh rasa yang gagal diucapkan oleh mulutku sendiri. Di antara nada-nada yang mungkin terdengar sederhana ini, ada bagian dari diriku yang pelan-pelan belajar jujur—tentang rasa kagum yang tumbuh kian dalam dan mengakar kepadamu.
+<br>
+Sebab binar matamu tak hanya indah untuk dipandang, namun juga begitu menenangkan saat dikenang. Binar itu mengajariku tentang bagaimana seseorang mampu hadir tanpa perlu riuh bersuara, tetapi tetap meninggalkan gema yang panjang dan abadi di relung kepala. Matamu serupa langit tengah malam: sunyi, terkesan jauh, namun mustahil untuk berhenti diindahkan.
+<br>
+
+Dan jika suatu hari nanti kamu bertanya mengapa semua ini tercipta, maka jawabannya sangat sederhana: karena ada beberapa manusia yang kehadirannya terlalu berarti untuk sekadar dijabarkan dalam satu kalimat saja. Mereka harus diabadikan—lewat lagu, lewat bait-bait puisi, dan lewat hal-hal kecil yang akan terus hidup, bahkan ketika waktu berjalan terlalu jauh meninggalkan kita. 
+            </br>
+        </div>
+    </div>
+
+    <div id="modalWishes" class="modal-overlay" onclick="closeModal(event, 'modalWishes')">
+        <div class="modal-card" onclick="event.stopPropagation()">
+            <span class="close-btn" onclick="document.getElementById('modalWishes').classList.remove('active')">&times;</span>
+            <h3 style="text-align: center; margin-bottom: 10px;">Leave a Message ✨</h3>
+            <p style="text-align: center; color: #576574; font-size: 0.9rem; margin-bottom: 15px;">
+                Tulis pesan, harapan, atau sekadar kata-kata manis untuk dikirimkan secara langsung:
+            </p>
+            <div style="display: flex; flex-direction: column; gap: 10px;">
+                <textarea id="wishMessage" placeholder="Tulis pesanmu di sini..." rows="4" style="width: 100%; padding: 10px 12px; border: 2px solid #a2d2ff; border-radius: 12px; font-family: 'Quicksand', sans-serif; font-size: 0.9rem; outline: none; resize: none; box-sizing: border-box;"></textarea>
+                <button onclick="sendToWhatsApp()" style="background: #a2d2ff; color: #2d3436; font-weight: 700; border: none; padding: 12px; border-radius: 12px; cursor: pointer; font-family: 'Quicksand', sans-serif; font-size: 0.95rem; transition: all 0.2s ease; margin-top: 5px;" onmouseover="this.style.background='#8bbcf3'" onmouseout="this.style.background='#a2d2ff'">
+                    Kirim via WhatsApp 💬
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Transisi Intro ke Main (Detik 5.8)
+        setTimeout(() => {
+            const intro = document.getElementById('intro-screen');
+            const main = document.getElementById('main-content');
+            intro.style.opacity = '0';
+            setTimeout(() => {
+                intro.style.display = 'none';
+                main.style.display = 'flex'; // Centering konten
+                document.body.style.backgroundColor = '#A2D2FF';
+                setTimeout(() => { main.style.opacity = '1'; }, 100);
+            }, 1000);
+        }, 5800);
+
+        // Music Logic
+        const music = document.getElementById('myMusic');
+        function toggleMusic() {
+            const btn = document.getElementById('playBtn');
+            if (music.paused) { music.play(); btn.innerHTML = "⏸"; } 
+            else { music.pause(); btn.innerHTML = "▶"; }
+        }
+
+        // Modal Logic
+        function openModal(id) { document.getElementById(id).classList.add('active'); }
+        function closeModal(event, id) { if (event.target.id === id) { document.getElementById(id).classList.remove('active'); } }
+
+        // Send Wish to WhatsApp
+        function sendToWhatsApp() {
+            const message = document.getElementById('wishMessage').value.trim();
+            const phone = '6282114073679';
+
+            if (!message) {
+                alert('Tulis pesanmu dulu yaa! ✨');
+                return;
+            }
+
+            const text = `${message}`;
+            const encodedText = encodeURIComponent(text);
+            const waUrl = `https://wa.me/${phone}?text=${encodedText}`;
+
+            window.open(waUrl, '_blank');
+        }
+    </script>
+</body>
+</html>
