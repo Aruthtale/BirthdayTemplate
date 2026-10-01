@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 
 // Ganti nomor WhatsApp di sini (format internasional tanpa "+")
-const WA_PHONE = "6282114073679";
+const WA_PHONE = "6282116607566";
 
 // ---------- Buku: struktur halaman (mudah diedit) ----------
 // Tiap leaf = 2 sisi: depan (tampil di kanan) & belakang (.back, tampil di kiri saat dibalik)
@@ -28,11 +28,11 @@ const LEAVES = [
           <div className="cover-frame"></div>
           <div className="page-inner center">
             <div className="cover-emblem">❦</div>
-            <div className="page-eyebrow">sebuah surat kecil</div>
-            <h2>Dear You</h2>
+            <div className="page-eyebrow">Surat kecil dari aku untuk kamu"</div>
+            <h2>Dear Tama</h2>
             <div className="rule"></div>
             <p className="soft" style={{ color: "var(--gold-soft)" }}>
-              untuk seseorang yang istimewa
+              Untuk seseorang yang pernah hidup dikehidupan ku
             </p>
           </div>
         </>
@@ -52,14 +52,23 @@ const LEAVES = [
             <div className="flourish">
               <span>✦</span>
             </div>
-            <PhotoFrame
-              src="/foto1.jpg"
-              placeholder="foto1.jpg"
-              className="photo-tilt"
-              hideImgOnError={hideImgOnError}
-            />
             <p className="dropcap">
               Yang diam-diam membuat dunia terasa jauh lebih tenang.
+            </p>
+            <p>
+              Ada kalanya seseorang hadir bukan untuk mengubah seluruh hidupmu,
+              melainkan untuk membuat hal-hal kecil terasa lebih berarti. Kamu
+              salah satunya. Lewat caramu memandang, caramu tersenyum, dan caramu
+              membiarkan dunia berjalan apa adanya.
+            </p>
+            <p>
+              Terima kasih sudah pernah menjadi tempat pulang yang hangat, walau
+              hanya sebentar. Terima kasih untuk tawa yang tak pernah kamu minta
+              untuk diingat, tapi selalu kembali tiap kali aku menutup mata.
+            </p>
+            <p className="soft">
+              Mata indahmu bukan sekadar tentang warna, tetapi tentang cara ia
+              melihat dunia — dan itu yang paling sulit untuk dilupakan.
             </p>
           </div>
           <div className="page-num">2</div>
@@ -77,15 +86,15 @@ const LEAVES = [
           <div className="page-inner">
             <div className="page-eyebrow">Halaman 3</div>
             <h2>
-              Sejak <span className="accent">Kapan</span> Entah
+              Happy birthday <span className="accent">&</span> Thank You
             </h2>
             <div className="flourish">
               <span>✦</span>
             </div>
             <PhotoFrame
-              src="/foto2.jpg"
-              placeholder="foto2.jpg"
-              className="photo-tilt r"
+              src="/img/foto2.jpg"
+              placeholder="img/foto2.jpg"
+              className="photo-tilt r photo-foto2"
               hideImgOnError={hideImgOnError}
             />
             <p className="dropcap">
@@ -105,7 +114,7 @@ const LEAVES = [
           <div className="page-inner">
             <div className="page-eyebrow">Halaman 4</div>
             <h2>
-              Binar <span className="accent">Matamu</span>
+              My wishes <span className="accent">For you</span>
             </h2>
             <div className="flourish">
               <span>✦</span>
@@ -134,7 +143,7 @@ const LEAVES = [
           <div className="page-inner">
             <div className="page-eyebrow">Halaman 5</div>
             <h2>
-              Serupa <span className="accent">Langit Malam</span>
+              <span className="accent">Bunga</span>
             </h2>
             <div className="flourish">
               <span>✦</span>
@@ -155,16 +164,21 @@ const LEAVES = [
     },
     {
       className: "face back the-end",
-      render: () => (
+      render: ({ hideImgOnError }) => (
         <div className="page-inner center">
           <div className="end-ornament">❧</div>
           <div className="page-eyebrow">Halaman Terakhir</div>
           <h2>Karena Ada Manusia</h2>
           <div className="rule"></div>
           <p>Yang kehadirannya terlalu berarti untuk dijabarkan dalam satu kalimat.</p>
+          <PhotoFrame
+            src="/img/lastpic.jpg"
+            placeholder="img/lastpic.jpg"
+            className="photo-tilt photo-lastpic"
+            hideImgOnError={hideImgOnError}
+          />
           <p className="soft">
-            Mereka harus diabadikan — lewat lagu, lewat bait, dan lewat hal-hal kecil
-            yang akan terus hidup.
+            Makasih ya, udah pernah bikin perempuan ini merasa "hidup" walau sementara.
           </p>
           <div className="rule"></div>
           <div className="end-mark">— Tamat —</div>
@@ -269,6 +283,56 @@ export default function BirthdayGift() {
     [duration]
   );
 
+  // ---------- AUTOPLAY ----------
+  // Begitu konten utama tampil (setelah intro), langsung coba putar lagu.
+  // Browser modern melarang autoplay BERSUARA tanpa interaksi user, jadi kalau
+  // diblokir kita pasang listener sekali-pakai: pada sentuhan/klik/tombol
+  // pertama apa pun, lagu langsung diputar otomatis.
+  const autoplayStarted = useRef(false);
+  const tryAutoPlay = useCallback(() => {
+    const music = audioRef.current;
+    if (!music || autoplayStarted.current) return;
+    music
+      .play()
+      .then(() => {
+        autoplayStarted.current = true;
+        setPlaying(true);
+      })
+      .catch(() => {
+        // Diblokir browser -> tunggu interaksi pertama user.
+        const onFirstGesture = () => {
+          const m = audioRef.current;
+          if (!m || autoplayStarted.current) return;
+          m.play()
+            .then(() => {
+              autoplayStarted.current = true;
+              setPlaying(true);
+            })
+            .catch(() => {});
+          removeGestures();
+        };
+        const removeGestures = () => {
+          window.removeEventListener("pointerdown", onFirstGesture);
+          window.removeEventListener("keydown", onFirstGesture);
+          window.removeEventListener("touchstart", onFirstGesture);
+          window.removeEventListener("click", onFirstGesture);
+          window.removeEventListener("wheel", onFirstGesture);
+        };
+        window.addEventListener("pointerdown", onFirstGesture, { passive: true });
+        window.addEventListener("keydown", onFirstGesture);
+        window.addEventListener("touchstart", onFirstGesture, { passive: true });
+        window.addEventListener("click", onFirstGesture);
+        window.addEventListener("wheel", onFirstGesture, { passive: true });
+      });
+  }, []);
+
+  useEffect(() => {
+    if (!mainVisible) return;
+    // Beri jeda kecil supaya <audio> sudah ter-mount & metadata siap.
+    const t = setTimeout(tryAutoPlay, 150);
+    return () => clearTimeout(t);
+  }, [mainVisible, tryAutoPlay]);
+
   // ---------- Modal ----------
   const [modalOpen, setModalOpen] = useState(false);
 
@@ -299,12 +363,18 @@ export default function BirthdayGift() {
   const sparklesSpawned = useRef(false);
 
   // Di mode 1-halaman, "selesai" saat sudah melewati halaman terakhir.
-  const isFinished = bookOpen && (spread ? flipped === TOTAL_LEAVES : pageIdx >= TOTAL_PAGES);
+  // Di mode spread, halaman terakhir buku ada di SISI BELAKANG lembar terakhir,
+  // jadi kita butuh satu langkah tambahan (flipped = TOTAL_LEAVES) supaya sisi
+  // belakang itu terlihat utuh dulu; layar tutup baru muncul setelahnya
+  // (flipped = TOTAL_LEAVES + 1).
+  const isFinished = bookOpen && (spread ? flipped > TOTAL_LEAVES : pageIdx >= TOTAL_PAGES);
 
   // Progres 0..1 sesuai mode
-  const progress = spread ? flipped / TOTAL_LEAVES : pageIdx / TOTAL_PAGES;
+  const progress = spread
+    ? Math.min(1, flipped / TOTAL_LEAVES)
+    : pageIdx / TOTAL_PAGES;
   const canPrev = spread ? flipped > 0 : pageIdx > 0;
-  const canNext = spread ? flipped < TOTAL_LEAVES : pageIdx < TOTAL_PAGES;
+  const canNext = spread ? flipped <= TOTAL_LEAVES : pageIdx < TOTAL_PAGES;
 
   // ---------- Layout size ----------
   const sizeBook = useCallback(() => {
@@ -395,10 +465,12 @@ export default function BirthdayGift() {
 
   const flipNext = useCallback(() => {
     if (spread) {
-      // Mode 2-halaman: maju 1 lembar
+      // Mode 2-halaman: maju 1 lembar. Boleh sampai TOTAL_LEAVES + 1 supaya
+      // sisi belakang lembar terakhir (halaman penutup) tampil utuh dulu,
+      // baru setelahnya masuk layar tutup (isFinished).
       setFlipped((f) => {
-        if (f < TOTAL_LEAVES) {
-          markFlipping(f);
+        if (f <= TOTAL_LEAVES) {
+          if (f < TOTAL_LEAVES) markFlipping(f);
           return f + 1;
         }
         return f;
@@ -670,8 +742,9 @@ export default function BirthdayGift() {
           style={{ display: "flex", opacity: mainOpacity }}
         >
           <div className="container">
-            <h1>Just For You</h1>
-            <p className="subtitle">A Special Gift 🩵</p>
+            <h1>Happy birthday Tama</h1>
+            <p className="subtitle">Dari aku untuk satria bukit pratama</p>
+            <p className="subtitle">"Don't forget to listen to the Panasea song at 56 seconds :)"</p>
 
             <div className="playlist-wrapper">
               <div className={`song-art${playing ? " spinning" : ""}`} aria-hidden="true">
@@ -682,13 +755,22 @@ export default function BirthdayGift() {
                   <i></i>
                 </span>
                 <div className="song-disc">
-                  ♪
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src="/img/panasea.jpg"
+                    alt="Sampul Panasea"
+                    onError={(e) => {
+                      e.currentTarget.style.display = "none";
+                      if (e.currentTarget.parentElement)
+                        e.currentTarget.parentElement.textContent = "♪";
+                    }}
+                  />
                 </div>
               </div>
 
               <div className="song-info">
                 <b>Panasea</b>
-                <small>Ardhito Pramono</small>
+                <small>Ardhit Pramono</small>
                 <div className="song-time">
                   <span>{fmtTime(curTime)}</span>
                   <span>{fmtTime(duration)}</span>
@@ -724,7 +806,7 @@ export default function BirthdayGift() {
               id="myMusic"
               ref={audioRef}
               loop
-              preload="metadata"
+              preload="auto"
               onLoadedMetadata={(e) => {
                 const d = e.currentTarget.duration;
                 if (isFinite(d) && d > 0) setDuration(d);
@@ -751,7 +833,7 @@ export default function BirthdayGift() {
                 <div className="icon-box">
                   <div className="star-css"></div>
                 </div>
-                <span>Little Thoughts</span>
+                <span>Ucapan terakhir mu tulis disini</span>
               </div>
             </div>
 

@@ -104,6 +104,11 @@
             font-size:1.5rem; color:var(--maroon-mid);
             background:linear-gradient(135deg, var(--cream), #d9c3ad);
             box-shadow:0 6px 16px rgba(0,0,0,.35), inset 0 0 0 1px rgba(255,255,255,.4);
+            overflow:hidden;
+        }
+        .song-disc img {
+            width:100%; height:100%; object-fit:cover; display:block;
+            border-radius:inherit;
         }
         .song-art .eq {
             position:absolute; right:-7px; bottom:-7px;
@@ -344,6 +349,25 @@
         /* foto miring ala scrapbook */
         .photo-tilt { transform:rotate(-2.5deg); }
         .photo-tilt.r { transform:rotate(2deg); }
+        /* foto halaman 3 (Teruntuk Pemilik Mata Indah) — sedikit lebih kecil & lebih miring */
+        .photo-frame.photo-foto2 {
+            width:82%; max-height:48%; margin:4px auto 14px;
+        }
+        /* !important agar rotasi tidak ditimpa animasi pageIn (translateY) */
+        .photo-frame.photo-tilt.r.photo-foto2 {
+            transform:rotate(5deg) !important;
+        }
+        @media (max-width: 720px) {
+            .photo-frame.photo-foto2 { width:86%; max-height:42%; }
+            .photo-frame.photo-tilt.r.photo-foto2 { transform:rotate(4deg) !important; }
+        }
+        /* foto halaman terakhir (Karena Ada Manusia) — diperkecil ~15% */
+        .photo-frame.photo-lastpic {
+            width:85%; max-height:48%;
+        }
+        @media (max-width: 720px) {
+            .photo-frame.photo-lastpic { width:82%; max-height:42%; }
+        }
 
         /* ---- halaman sampul (cover book) ---- */
         .face.cover-face {
