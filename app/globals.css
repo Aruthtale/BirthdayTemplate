@@ -1,12 +1,5 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>A Special Gift</title>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;1,500&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
+/* Global styles — dipindahkan apa adanya dari index.html asli (BirthdayTemp v6) */
 
-    <style>
         :root {
             --maroon-deep: #2b0608;
             --maroon-mid:  #4a0a0f;
@@ -86,9 +79,98 @@
         .container { width:100%; max-width:500px; position:relative; z-index:2; }
         h1 { font-family:'Playfair Display',serif; color:var(--cream); font-size:clamp(2rem,8vw,3rem); text-shadow:0 4px 24px rgba(0,0,0,.5); margin-bottom:5px; letter-spacing:.03em; }
         .subtitle { color:var(--tan); font-weight:600; margin-bottom:30px; letter-spacing:2px; font-size:.85rem; text-transform:uppercase; }
-        .playlist-wrapper { background:rgba(246,231,216,.08); backdrop-filter:blur(10px); border:1px solid rgba(246,231,216,.28); border-radius:50px; padding:10px 25px; display:flex; align-items:center; justify-content:space-between; box-shadow:0 10px 25px rgba(0,0,0,.35); margin-bottom:40px; width:100%; box-sizing:border-box; }
-        .song-info { text-align:left; } .song-info b { display:block; color:var(--cream); font-size:1rem; } .song-info small { color:var(--tan-soft); font-weight:600; font-size:.75rem; }
-        .btn-music { background:var(--cream); border:none; width:45px; height:45px; border-radius:50%; color:var(--maroon-mid); font-size:1.2rem; cursor:pointer; }
+        .playlist-wrapper {
+            position:relative;
+            background:linear-gradient(180deg, rgba(246,231,216,.11), rgba(246,231,216,.05));
+            backdrop-filter:blur(12px);
+            border:1px solid rgba(246,231,216,.24);
+            border-radius:22px;
+            padding:14px 18px 20px;
+            display:grid;
+            grid-template-columns:auto 1fr auto;
+            grid-template-rows:auto auto;
+            grid-template-areas:"art info btn" "prog prog prog";
+            align-items:center;
+            column-gap:14px; row-gap:14px;
+            box-shadow:0 14px 34px rgba(0,0,0,.38), inset 0 1px 0 rgba(255,255,255,.10);
+            margin-bottom:clamp(26px, 5vh, 40px);
+            width:100%; box-sizing:border-box;
+        }
+        /* --- sampul + equalizer --- */
+        .song-art { grid-area:art; position:relative; width:58px; height:58px; }
+        .song-disc {
+            width:58px; height:58px; border-radius:16px;
+            display:flex; align-items:center; justify-content:center;
+            font-size:1.5rem; color:var(--maroon-mid);
+            background:linear-gradient(135deg, var(--cream), #d9c3ad);
+            box-shadow:0 6px 16px rgba(0,0,0,.35), inset 0 0 0 1px rgba(255,255,255,.4);
+        }
+        .song-art .eq {
+            position:absolute; right:-7px; bottom:-7px;
+            display:flex; align-items:flex-end; gap:2px;
+            height:20px; padding:3px 5px; border-radius:8px;
+            background:var(--maroon-mid); box-shadow:0 3px 10px rgba(0,0,0,.4);
+            opacity:0; transform:scale(.7); transition:opacity .3s, transform .3s;
+        }
+        .song-art .eq.playing { opacity:1; transform:scale(1); }
+        .song-art .eq i {
+            width:3px; height:4px; border-radius:2px; background:var(--tan);
+            animation:eqBar .9s ease-in-out infinite;
+        }
+        .song-art .eq i:nth-child(1) { animation-delay:0s; }
+        .song-art .eq i:nth-child(2) { animation-delay:.18s; }
+        .song-art .eq i:nth-child(3) { animation-delay:.36s; }
+        .song-art .eq i:nth-child(4) { animation-delay:.54s; }
+        @keyframes eqBar {
+            0%,100% { height:4px; } 50% { height:16px; }
+        }
+        /* disc berputar pelan saat play */
+        .song-art.spinning .song-disc { animation:discSpin 6s linear infinite; }
+        @keyframes discSpin { to { transform:rotate(360deg); } }
+
+        /* --- info lagu --- */
+        .song-info { grid-area:info; text-align:left; min-width:0; }
+        .song-info b { display:block; color:var(--cream); font-size:1.02rem; letter-spacing:.01em; }
+        .song-info small { display:block; color:var(--tan-soft); font-weight:600; font-size:.74rem; margin-top:1px; }
+        .song-time {
+            display:flex; justify-content:space-between;
+            color:var(--tan-soft); font-size:.66rem; font-weight:600;
+            margin-top:5px; letter-spacing:.03em; opacity:.85;
+        }
+
+        /* --- tombol play --- */
+        .btn-music {
+            grid-area:btn;
+            background:var(--cream);
+            border:none; width:48px; height:48px; border-radius:50%;
+            color:var(--maroon-mid); font-size:1.15rem; cursor:pointer;
+            display:flex; align-items:center; justify-content:center;
+            box-shadow:0 6px 16px rgba(0,0,0,.35);
+            transition:transform .18s ease, box-shadow .18s ease;
+        }
+        .btn-music:hover { transform:scale(1.07); box-shadow:0 8px 20px rgba(0,0,0,.45); }
+        .btn-music:active { transform:scale(.95); }
+
+        /* --- progress bar lagu --- */
+        .song-progress {
+            grid-area:prog;
+            height:6px; width:100%; border-radius:99px; cursor:pointer;
+            background:rgba(246,231,216,.16); overflow:hidden;
+            box-shadow:inset 0 0 0 1px rgba(246,231,216,.12);
+            transition:height .18s ease;
+        }
+        .song-progress:hover { height:9px; }
+        .song-progress-fill {
+            height:100%; border-radius:99px; width:0%;
+            background:linear-gradient(90deg, var(--tan), var(--cream));
+            box-shadow:0 0 10px rgba(246,231,216,.5);
+            transition:width .25s linear;
+        }
+        .tap-hint {
+            color:var(--tan-soft); opacity:.9; font-size:.78rem;
+            margin-top:clamp(26px, 5vh, 44px);
+            font-weight:600; text-transform:uppercase; letter-spacing:2px;
+        }
         .icon-box { width:75px; height:75px; margin:0 auto 15px; display:flex; align-items:center; justify-content:center; background:rgba(246,231,216,.12); border-radius:22px; }
         .envelope { width:40px; height:26px; background:var(--tan); position:relative; border-radius:3px; }
         .envelope::after { content:''; position:absolute; top:0; left:0; border-left:20px solid transparent; border-right:20px solid transparent; border-top:16px solid #4a0a0f; }
@@ -107,7 +189,8 @@
             background:radial-gradient(circle at 50% 40%, #5a0e14 0%, #3a080c 50%, #1c0406 100%);
             overflow:hidden; perspective:2200px;
         }
-        .book-overlay.active { display:flex; }
+        .book-overlay.active { display:flex; animation:overlayIn .5s ease both; }
+        @keyframes overlayIn { from { opacity:0; } to { opacity:1; } }
 
         /* meja / ambience */
         .book-overlay::before {
@@ -459,461 +542,78 @@
             .flip-prev { left:1.5vw; } .flip-next { right:1.5vw; }
             .book-hint { bottom:2.4vh; }
         }
-    </style>
-</head>
-<body>
 
-    <!-- ===================== INTRO ===================== -->
-    <div id="intro-screen">
-        <div class="wrapper">
-            <div class="candles">
-                <div class="light__wave"></div>
-                <div class="candle1">
-                    <div class="candle1__body">
-                        <div class="candle1__eyes"><span class="candle1__eyes-one"></span><span class="candle1__eyes-two"></span></div>
-                        <div class="candle1__mouth"></div>
-                    </div>
-                    <div class="candle1__stick"></div>
-                </div>
-                <div class="candle2">
-                    <div class="candle2__body"><div class="candle2__eyes"><div class="candle2__eyes-one"></div><div class="candle2__eyes-two"></div></div></div>
-                    <div class="candle2__stick"></div>
-                </div>
-                <div class="candle2__fire"></div>
-                <div class="sparkles-one"></div><div class="sparkles-two"></div>
-                <div class="candle__smoke-one"></div><div class="candle__smoke-two"></div>
-            </div>
-            <div class="floor"></div>
-            <div class="loading-text" style="margin-bottom:150px;">
-                <span>L</span><span>o</span><span>a</span><span>d</span><span>i</span><span>n</span><span>g</span>
-                <div class="dots"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
-            </div>
-        </div>
-    </div>
+        /* ============ MODE 1 HALAMAN (HP/tablet) ============
+           Tepat SATU sisi halaman dirender datar (tanpa rotasi 3D), sehingga
+           tidak ada halaman lain yang menyembul/"terpotong" di tepi.
+           Elemen ini menggantikan peran .leaf di mode 1-halaman. */
+        .book:not(.spread) .single-page {
+            position:absolute; top:0; left:0;
+            width:var(--book-w); height:var(--book-h);
+            display:flex; flex-direction:column;
+            padding:26px 22px;
+            color:var(--ink);
+            border-radius:3px;
+            overflow:hidden;
+            /* tekstur kertas sama seperti .face */
+            background:
+              radial-gradient(circle at 18% 12%, rgba(255,255,255,.55), transparent 40%),
+              radial-gradient(circle at 85% 90%, rgba(120,80,50,.10), transparent 45%),
+              linear-gradient(135deg, rgba(0,0,0,.04), transparent 32%),
+              var(--pg-blush);
+            box-shadow:0 14px 40px rgba(0,0,0,.45), inset 0 0 46px rgba(120,80,50,.10);
+        }
+        /* netralkan rotasi 180° bawaan .face.back (di mode 1-halaman halaman
+           belakang ditampilkan datar, bukan sebagai sisi terbalik) */
+        .book:not(.spread) .single-page.back { transform:none; }
 
-    <!-- ===================== MAIN ===================== -->
-    <div id="main-content">
-        <div class="container">
-            <h1>Just For You</h1>
-            <p class="subtitle">A Special Gift 🩵</p>
-
-            <div class="playlist-wrapper">
-                <div class="song-info">
-                    <!-- GANTI label lagu di sini -->
-                    <b>Panasea</b>
-                    <small>—</small>
-                </div>
-                <button class="btn-music" onclick="toggleMusic()" id="playBtn">▶</button>
-            </div>
-
-            <!-- GANTI file jadi panasea.mp3 (taruh di folder yang sama) -->
-            <audio id="myMusic" loop>
-                <source src="panasea.mp3" type="audio/mpeg">
-            </audio>
-
-            <div class="menu-grid">
-                <div class="menu-item" onclick="openBook()">
-                    <div class="icon-box"><div class="envelope"></div></div>
-                    <span>A Special Letter</span>
-                </div>
-                <div class="menu-item" onclick="openModal('modalWishes')">
-                    <div class="icon-box"><div class="star-css"></div></div>
-                    <span>Little Thoughts</span>
-                </div>
-            </div>
-
-            <p style="color:var(--tan-soft); opacity:.9; font-size:.8rem; margin-top:50px; font-weight:600; text-transform:uppercase; letter-spacing:2px;">
-                Tap the cards to open
-            </p>
-        </div>
-    </div>
-
-    <!-- ===================== BOOK (letter slides) ===================== -->
-    <div class="book-overlay" id="bookOverlay">
-        <div class="book-progress" id="bookProgress"></div>
-        <button class="book-close" onclick="closeBook()">&times;</button>
-        <div class="book-title" id="bookTitle">Our Little Story <span style="opacity:.45;font-size:.6em;font-weight:400">· v6</span></div>
-
-        <button class="flip-btn flip-prev" id="flipPrev" onclick="flipPrev()">‹</button>
-
-        <div class="book" id="book">
-            <!-- endpaper (halaman kiri saat buku baru dibuka) -->
-            <div class="endpaper" aria-hidden="true">
-                <div class="endpaper-orn">❦</div>
-                <div class="endpaper-line"></div>
-                <div class="endpaper-sub">our little story</div>
-            </div>
-            <div class="leaf" data-leaf="0">
-                <!-- FRONT: cover -->
-                <div class="face cover-face">
-                    <div class="cover-frame"></div>
-                    <div class="page-inner center">
-                        <div class="cover-emblem">❦</div>
-                        <div class="page-eyebrow">sebuah surat kecil</div>
-                        <h2>Dear You</h2>
-                        <div class="rule"></div>
-                        <p class="soft" style="color:var(--gold-soft);">untuk seseorang yang istimewa</p>
-                    </div>
-                </div>
-                <!-- BACK: halaman 2 -->
-                <div class="face back theme-blush">
-                    <div class="corner tl"></div><div class="corner br"></div>
-                    <div class="page-inner">
-                        <div class="page-eyebrow">Halaman 2</div>
-                        <h2>Teruntuk <span class="accent">Pemilik Mata Indah</span></h2>
-                        <div class="flourish"><span>✦</span></div>
-                        <div class="photo-frame photo-tilt">
-                            <img src="foto1.jpg" alt="foto kenangan" onerror="this.style.display='none';this.nextElementSibling.style.display='block';">
-                            <div class="ph-placeholder" style="display:none;"><span class="cam">📷</span>Taruh foto di sini<br>(foto1.jpg)</div>
-                        </div>
-                        <p class="dropcap">Yang diam-diam membuat dunia terasa jauh lebih tenang.</p>
-                    </div>
-                    <div class="page-num">2</div>
-                </div>
-            </div>
-
-            <div class="leaf" data-leaf="1">
-                <!-- FRONT: halaman 3 -->
-                <div class="face theme-rose">
-                    <div class="corner tl"></div><div class="corner br"></div>
-                    <div class="page-inner">
-                        <div class="page-eyebrow">Halaman 3</div>
-                        <h2>Sejak <span class="accent">Kapan</span> Entah</h2>
-                        <div class="flourish"><span>✦</span></div>
-                        <div class="photo-frame photo-tilt r">
-                            <img src="foto2.jpg" alt="foto kenangan" onerror="this.style.display='none';this.nextElementSibling.style.display='block';">
-                            <div class="ph-placeholder" style="display:none;"><span class="cam">📷</span>Taruh foto di sini<br>(foto2.jpg)</div>
-                        </div>
-                        <p class="dropcap">Aku mulai jatuh pada cara matamu memandang semesta.</p>
-                    </div>
-                    <div class="page-num">3</div>
-                </div>
-                <!-- BACK: halaman 4 -->
-                <div class="face back theme-sand">
-                    <div class="corner tl"></div><div class="corner br"></div>
-                    <div class="page-inner">
-                        <div class="page-eyebrow">Halaman 4</div>
-                        <h2>Binar <span class="accent">Matamu</span></h2>
-                        <div class="flourish"><span>✦</span></div>
-                        <div class="photo-frame">
-                            <img src="foto3.jpg" alt="foto kenangan" onerror="this.style.display='none';this.nextElementSibling.style.display='block';">
-                            <div class="ph-placeholder" style="display:none;"><span class="cam">📷</span>Taruh foto di sini<br>(foto3.jpg)</div>
-                        </div>
-                        <p class="dropcap">Tak hanya indah dipandang, namun menenangkan saat dikenang.</p>
-                    </div>
-                    <div class="page-num">4</div>
-                </div>
-            </div>
-
-            <div class="leaf" data-leaf="2">
-                <!-- FRONT: halaman 5 -->
-                <div class="face theme-mauve">
-                    <div class="corner tl"></div><div class="corner br"></div>
-                    <div class="page-inner">
-                        <div class="page-eyebrow">Halaman 5</div>
-                        <h2>Serupa <span class="accent">Langit Malam</span></h2>
-                        <div class="flourish"><span>✦</span></div>
-                        <div class="photo-frame photo-tilt">
-                            <img src="foto4.jpg" alt="foto kenangan" onerror="this.style.display='none';this.nextElementSibling.style.display='block';">
-                            <div class="ph-placeholder" style="display:none;"><span class="cam">📷</span>Taruh foto di sini<br>(foto4.jpg)</div>
-                        </div>
-                        <p class="dropcap">Sunyi, terkesan jauh, namun mustahil untuk berhenti diindahkan.</p>
-                    </div>
-                    <div class="page-num">5</div>
-                </div>
-                <!-- BACK: HALAMAN TUTUP BUKU (the end) -->
-                <div class="face back the-end">
-                    <div class="page-inner center">
-                        <div class="end-ornament">❧</div>
-                        <div class="page-eyebrow">Halaman Terakhir</div>
-                        <!-- penanda penutup: konten ini = halaman pamungkas -->
-                        <h2>Karena Ada Manusia</h2>
-                        <div class="rule"></div>
-                        <p>Yang kehadirannya terlalu berarti untuk dijabarkan dalam satu kalimat.</p>
-                        <p class="soft">Mereka harus diabadikan — lewat lagu, lewat bait, dan lewat hal-hal kecil yang akan terus hidup.</p>
-                        <div class="rule"></div>
-                        <div class="end-mark">— Tamat —</div>
-                        <p class="soft" style="margin-top:8px; font-size:.95rem;">terima kasih sudah membaca sampai sini ♡</p>
-                    </div>
-                </div>
-            </div>
-
-        </div>
-
-        <button class="flip-btn flip-next" id="flipNext" onclick="flipNext()">›</button>
-        <div class="book-hint" id="bookHint">‹ geser / klik untuk membalik halaman ›</div>
-
-        <!-- layar penutup buku (muncul setelah semua halaman dibalik) -->
-        <div class="book-closed" id="bookClosed">
-            <div class="closed-mark">❧</div>
-            <p class="closed-text">Halaman terakhir sudah sampai.<br>Buku ini ditutup dengan satu doa kecil untukmu.</p>
-            <div class="closed-actions">
-                <button class="closed-btn" onclick="reopenBook()">↺ Baca lagi</button>
-                <button class="closed-btn ghost" onclick="closeBook()">✕ Tutup</button>
-            </div>
-        </div>
-    </div>
-    <!-- ===================== MODAL ===================== -->
-    <div id="modalWishes" class="modal-overlay" onclick="closeModal(event, 'modalWishes')">
-        <div class="modal-card" onclick="event.stopPropagation()">
-            <span class="close-btn" onclick="document.getElementById('modalWishes').classList.remove('active')">&times;</span>
-            <h3 style="text-align:center; margin-bottom:10px;">Leave a Message ✨</h3>
-            <p style="margin-bottom:15px;">Tulis pesan, harapan, atau kata-kata manis untuk dikirim langsung:</p>
-            <div style="display:flex; flex-direction:column; gap:10px;">
-                <textarea id="wishMessage" placeholder="Tulis pesanmu di sini..." rows="4" style="width:100%; padding:10px 12px; border:2px solid var(--maroon-light); border-radius:12px; font-family:'Quicksand',sans-serif; font-size:.9rem; outline:none; resize:none; box-sizing:border-box; background:rgba(246,231,216,.95); color:#2b0608;"></textarea>
-                <button onclick="sendToWhatsApp()" style="background:var(--tan); color:#2b0608; font-weight:700; border:none; padding:12px; border-radius:12px; cursor:pointer; font-family:'Quicksand',sans-serif; font-size:.95rem; margin-top:5px;" onmouseover="this.style.background='#ffdcb8'" onmouseout="this.style.background='var(--tan)'">Kirim via WhatsApp 💬</button>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        /* ---- Intro -> Main ---- */
-        setTimeout(() => {
-            const intro = document.getElementById('intro-screen');
-            const main = document.getElementById('main-content');
-            intro.style.opacity = '0';
-            setTimeout(() => {
-                intro.style.display = 'none';
-                main.style.display = 'flex';
-                document.body.style.backgroundColor = '#4a0a0f';
-                setTimeout(() => { main.style.opacity = '1'; }, 100);
-            }, 1000);
-        }, 5800);
-
-        /* ---- Music ---- */
-        const music = document.getElementById('myMusic');
-        function toggleMusic() {
-            const btn = document.getElementById('playBtn');
-            if (music.paused) {
-                music.play().then(() => { btn.innerHTML = "⏸"; }).catch(() => {
-                    alert("File lagu belum ada. Taruh 'panasea.mp3' di folder yang sama ya.");
-                });
-            } else { music.pause(); btn.innerHTML = "▶"; }
+        /* ---- transisi halus saat pindah halaman (slide berarah) ---- */
+        .book:not(.spread) .single-page.slide-next {
+            animation:pageSlideNext .5s cubic-bezier(.2,.75,.3,1) both;
+        }
+        .book:not(.spread) .single-page.slide-prev {
+            animation:pageSlidePrev .5s cubic-bezier(.2,.75,.3,1) both;
+        }
+        @keyframes pageSlideNext {
+            from { opacity:0; transform:translateX(38px) scale(.985); }
+            to   { opacity:1; transform:translateX(0) scale(1); }
+        }
+        @keyframes pageSlidePrev {
+            from { opacity:0; transform:translateX(-38px) scale(.985); }
+            to   { opacity:1; transform:translateX(0) scale(1); }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            .book:not(.spread) .single-page.slide-next,
+            .book:not(.spread) .single-page.slide-prev { animation:none; }
         }
 
-        /* ---- Modal ---- */
-        function openModal(id) { document.getElementById(id).classList.add('active'); }
-        function closeModal(event, id) { if (event.target.id === id) document.getElementById(id).classList.remove('active'); }
+        /* variasi tema halaman tetap berlaku (warisan class .theme-*) */
+        .book:not(.spread) .single-page > .reveal {
+            display:flex; flex-direction:column; height:100%; min-height:0;
+        }
+        /* page-inner di dalam single-page harus mengisi penuh */
+        .book:not(.spread) .single-page .page-inner { height:100%; }
 
-        /* ---- BOOK LOGIC (leaf-based page flip) ---- */
-        const book = document.getElementById('book');
-        const leaves = Array.from(book.querySelectorAll('.leaf'));
-        const total = leaves.length;
-        let flipped = 0;            // berapa lembar yang sudah dibalik
-        const bookHint = document.getElementById('bookHint');
-        const bookProgress = document.getElementById('bookProgress');
-        const flipPrevBtn = document.getElementById('flipPrev');
-        const flipNextBtn = document.getElementById('flipNext');
-
-        function renderBook() {
-            leaves.forEach((leaf, i) => {
-                leaf.classList.toggle('flipped', i < flipped);
-                // z-index: leaf belum dibalik (kolom kanan) -> indeks kecil makin ke depan
-                //           leaf sudah dibalik (kolom kiri)  -> indeks besar makin ke depan
-                leaf.style.zIndex = (i < flipped) ? (i + 1) : (total - i);
-                // tandai face mana yang HARUS tampak (dipakai mode 1-halaman/HP
-                // supaya tidak bergantung pada backface-visibility 3D yang rapuh)
-                const front = leaf.querySelector('.face:not(.back)');
-                const back = leaf.querySelector('.face.back');
-                const showBack = i < flipped;
-                if (front) front.classList.toggle('face-show', !showBack);
-                if (back) back.classList.toggle('face-show', showBack);
-            });
-            bookProgress.style.width = (flipped / total * 100) + '%';
-            flipPrevBtn.disabled = flipped === 0;
-            flipNextBtn.disabled = flipped === total;
-            if (flipped > 0) bookHint.classList.add('hidden');
-            // animasi konten untuk halaman yang baru terlihat
-            revealVisibleFaces();
-            // saat semua halaman selesai dibalik -> mode "buku ditutup" (the end)
-            document.getElementById('bookOverlay').classList.toggle('finished', flipped === total);
+        /* animasi masuk konten tiap halaman pada mode 1-halaman */
+        .book:not(.spread) .single-page > .reveal > * {
+            animation:pageIn .7s cubic-bezier(.2,.7,.3,1) both;
+        }
+        .book:not(.spread) .single-page > .reveal > *:nth-child(1) { animation-delay:.12s; }
+        .book:not(.spread) .single-page > .reveal > *:nth-child(2) { animation-delay:.2s; }
+        .book:not(.spread) .single-page > .reveal > *:nth-child(3) { animation-delay:.28s; }
+        .book:not(.spread) .single-page > .reveal > *:nth-child(4) { animation-delay:.36s; }
+        .book:not(.spread) .single-page > .reveal > *:nth-child(5) { animation-delay:.44s; }
+        .book:not(.spread) .single-page > .reveal > *:nth-child(6) { animation-delay:.52s; }
+        .book:not(.spread) .single-page > .reveal > *:nth-child(7) { animation-delay:.6s; }
+        /* di mode 1-halaman ukuran padding ikut media query .face */
+        @media (max-width: 720px) {
+            .book:not(.spread) .single-page { padding:24px 20px 28px; }
+        }
+        @media (max-width: 380px) {
+            .book:not(.spread) .single-page { padding:20px 16px 24px; }
+        }
+        @media (max-height: 460px) {
+            .book:not(.spread) .single-page { padding:16px 18px 20px; }
         }
 
-        /* tandai face yang sedang terlihat agar kontennya ber-animasi masuk */
-        function revealVisibleFaces() {
-            leaves.forEach((leaf, i) => {
-                const front = leaf.querySelector('.face:not(.back)');
-                const back = leaf.querySelector('.face.back');
-                if (i < flipped) {
-                    // leaf sudah dibalik -> yang terlihat sisi BACK
-                    if (front) front.classList.remove('reveal');
-                    if (back) restartReveal(back);
-                } else {
-                    if (back) back.classList.remove('reveal');
-                    if (front) front.classList.add('reveal');
-                }
-            });
-        }
-        function restartReveal(el) {
-            el.classList.remove('reveal');
-            void el.offsetWidth;   // paksa reflow agar animasi bisa diulang
-            el.classList.add('reveal');
-        }
-
-        /* efek lembar "terangkat" singkat saat dibalik */
-        let flipAnimTimer = null;
-        function markFlipping(idx) {
-            const leaf = leaves[idx];
-            if (!leaf) return;
-            leaf.classList.add('flipping');
-            clearTimeout(flipAnimTimer);
-            flipAnimTimer = setTimeout(() => leaf.classList.remove('flipping'), 950);
-        }
-
-        function flipNext() { if (flipped < total) { markFlipping(flipped); flipped++; renderBook(); } }
-        function flipPrev() { if (flipped > 0) { markFlipping(flipped - 1); flipped--; renderBook(); } }
-
-        function openBook() {
-            document.getElementById('bookOverlay').classList.add('active');
-            document.getElementById('bookOverlay').classList.remove('finished');
-            applyLayout();
-            flipped = 0; renderBook();
-            bookHint.classList.remove('hidden');
-            spawnSparkles();
-        }
-        function closeBook() { document.getElementById('bookOverlay').classList.remove('active'); }
-        function reopenBook() {
-            document.getElementById('bookOverlay').classList.remove('finished');
-            flipped = 0; renderBook();
-            bookHint.classList.remove('hidden');
-        }
-
-        /* partikel kelap-kelip lembut di latar buku */
-        let sparklesSpawned = false;
-        function spawnSparkles() {
-            if (sparklesSpawned) return; sparklesSpawned = true;
-            const ov = document.getElementById('bookOverlay');
-            for (let i = 0; i < 18; i++) {
-                const s = document.createElement('div');
-                s.className = 'sparkle';
-                s.style.left = (Math.random() * 100) + '%';
-                s.style.top = (Math.random() * 100) + '%';
-                s.style.animationDelay = (Math.random() * 4) + 's';
-                s.style.animationDuration = (3 + Math.random() * 3) + 's';
-                const sz = 2 + Math.random() * 3;
-                s.style.width = s.style.height = sz + 'px';
-                ov.appendChild(s);
-            }
-        }
-
-        /* Hitung ukuran buku agar SELALU muat di layar nyata (tak terpotong).
-           Menyisakan ruang atas (judul) + bawah (tombol/hint) + margin samping.
-           Mengembalikan keputusan mode: true = spread (2 halaman).
-           PENTING: keputusan spread di sini juga, bukan hanya media query, agar
-           HP yang melaporkan lebar viewport "lebar" tetap tampil 1 halaman. */
-        function sizeBook() {
-            // Pakai visualViewport bila ada (lebih akurat di HP: address bar, zoom)
-            const vv = window.visualViewport;
-            const vw = Math.round(vv ? vv.width : window.innerWidth);
-            const vh = Math.round(vv ? vv.height : window.innerHeight);
-
-            // ===== ATURAN TEGAS: 1 lembar = 1 HALAMAN untuk HP/tablet =====
-            // Mode 2 halaman (spread) HANYA untuk layar BESAR (laptop/desktop
-            // >= 1100px & mendatar). SEMUA HP & tablet (termasuk iPad) SELALU
-            // 1 halaman penuh, termasuk walau dipakai mendatar (landscape).
-            const BIG = vw >= 1100 && vw > vh;      // laptop/desktop saja
-            const perPage = (vw - 170) / 2;
-            const spread = BIG && perPage >= 380;   // tiap halaman tetap lega
-
-            let availW, availH;
-            if (spread) {
-                availW = perPage;
-                availH = vh - 140;
-            } else {
-                availW = vw - 92;          // sisakan ruang tombol ‹ › di pinggir
-                availH = vh - 140;         // judul atas + hint bawah
-            }
-
-            // Ukuran halaman terbesar yang muat, rasio fleksibel (lebih tinggi
-            // daripada lebar). Prioritaskan memenuhi ruang agar tak kekecilan.
-            let w = Math.min(availW, 470);
-            let h = availH;
-            const narrow = !spread && vw < 600;
-            const rMin = narrow ? 0.50 : 0.62;   // w/h minimum
-            const rMax = narrow ? 0.62 : 0.80;   // w/h maksimum
-            if (w / h > rMax) w = h * rMax;
-            if (w / h < rMin) h = w / rMin;
-            w = Math.max(180, w);
-            h = Math.min(h, availH);
-
-            document.documentElement.style.setProperty('--book-w', Math.round(w) + 'px');
-            document.documentElement.style.setProperty('--book-h', Math.round(h) + 'px');
-            return spread;
-        }
-
-        function applyLayout() {
-            const spread = sizeBook();
-            book.classList.toggle('spread', spread);
-            // ulangi render agar penanda face-show ikut diperbarui saat
-            // berpindah desktop <-> HP (mis. saat HP dirotasi / resize jendela)
-            renderBook();
-        }
-        window.addEventListener('resize', applyLayout);
-        window.addEventListener('orientationchange', () => setTimeout(applyLayout, 120));
-        if (window.visualViewport) {
-            window.visualViewport.addEventListener('resize', applyLayout);
-        }
-
-        /* ---- Wheel / trackpad ---- */
-        const overlay = document.getElementById('bookOverlay');
-        let wheelLock = false;
-        overlay.addEventListener('wheel', (e) => {
-            if (!overlay.classList.contains('active')) return;
-            if (overlay.classList.contains('finished')) return;
-            if (wheelLock) return;
-            if (Math.abs(e.deltaY) < 18 && Math.abs(e.deltaX) < 18) return;
-            wheelLock = true;
-            if (e.deltaY > 0 || e.deltaX > 0) flipNext(); else flipPrev();
-            setTimeout(() => wheelLock = false, 900);
-        }, { passive: true });
-
-        /* ---- Touch swipe ---- */
-        let startX = 0, startY = 0, dragging = false;
-        overlay.addEventListener('touchstart', (e) => {
-            if (overlay.classList.contains('finished')) return;
-            startX = e.touches[0].clientX; startY = e.touches[0].clientY; dragging = true;
-        }, { passive: true });
-        overlay.addEventListener('touchend', (e) => {
-            if (!dragging) return; dragging = false;
-            const dx = e.changedTouches[0].clientX - startX;
-            const dy = e.changedTouches[0].clientY - startY;
-            if (Math.abs(dx) > 45 && Math.abs(dx) > Math.abs(dy)) { dx < 0 ? flipNext() : flipPrev(); }
-        }, { passive: true });
-
-        /* ---- Click pada sisi kanan/kiri buku ---- */
-        overlay.addEventListener('click', (e) => {
-            if (overlay.classList.contains('finished')) return;
-            if (e.target.closest('.flip-btn') || e.target.closest('.book-close') || e.target.closest('.page') || e.target.closest('.book-closed')) return;
-            const x = e.clientX / window.innerWidth;
-            if (x > 0.6) flipNext(); else if (x < 0.4) flipPrev();
-        });
-
-        /* ---- Keyboard ---- */
-        window.addEventListener('keydown', (e) => {
-            if (!overlay.classList.contains('active')) return;
-            if (overlay.classList.contains('finished')) { if (e.key === 'Escape') closeBook(); return; }
-            if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') { e.preventDefault(); flipNext(); }
-            if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') { e.preventDefault(); flipPrev(); }
-            if (e.key === 'Escape') closeBook();
-        });
-
-        /* ---- WhatsApp ---- */
-        function sendToWhatsApp() {
-            const message = document.getElementById('wishMessage').value.trim();
-            const phone = '6282114073679';
-            if (!message) { alert('Tulis pesanmu dulu yaa! ✨'); return; }
-            window.open(`https://wa.me/${phone}?text=${encodeURIComponent(message)}`, '_blank');
-        }
-
-        /* ---- Inisialisasi awal ----
-           Hitung ukuran + tentukan mode (1/2 halaman) SEKARANG juga, jangan
-           tunggu tombol buku ditekan. Ini memastikan begitu buku dibuka,
-           halaman langsung tampil pas & mulai dari cover (bukan tertinggal
-           pakai ukuran cadangan CSS). */
-        applyLayout();
-        // ulangi sedikit lagi setelah font/foto termuat (ukuran bisa berubah)
-        window.addEventListener('load', applyLayout);
-        setTimeout(applyLayout, 300);
-    </script>
-</body>
-</html>
+    

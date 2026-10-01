@@ -1,9 +1,10 @@
 # Dependencies
 node_modules/
 
-# Build output
+# Next.js build output
+.next/
+out/
 dist/
-dist-ssr/
 build/
 
 # Logs
@@ -21,7 +22,7 @@ pnpm-debug.log*
 .DS_Store
 Thumbs.db
 *.suo
-*.ntvs*
+*.ntvsproj
 *.njsproj
 *.sln
 *.sw?
@@ -31,7 +32,12 @@ Thumbs.db
 .env
 .env.*
 
-# Audio (file lagu besar — taruh lokal, jangan di-push)
+# Next.js env
+.env*.local
+next-env.d.ts
+
+# Audio & foto (file besar — taruh lokal, jangan di-push)
 *.mp3
 *.wav
 *.m4a
+public/*.mp3
