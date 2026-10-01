@@ -207,7 +207,10 @@
         .book:not(.spread) .endpaper { display:none; }
 
         /* konten halaman */
-        .page-inner { display:flex; flex-direction:column; height:100%; }
+        .page-inner {
+            display:flex; flex-direction:column; height:100%; min-height:0;
+            overflow-y:auto; -webkit-overflow-scrolling:touch;
+        }
         .page-inner.center { justify-content:center; text-align:center; }
 
         .page-eyebrow {
@@ -401,50 +404,34 @@
         .close-btn { position:absolute; top:12px; right:18px; font-size:2rem; color:rgba(246,231,216,.4); cursor:pointer; z-index:10; }
 
         /* ============ RESPONSIVE ============
-           Desktop  (>=1024px): spread 2 halaman, cover kiri+kanan
-           Tablet/iPad (721-1023px landscape & 721px+) : spread, ukuran menyesuaikan
-           HP & tablet potret (<=720px): 1 halaman penuh, tepat 1 face tampak       */
+           Mode ditentukan oleh JS (applyLayout + sizeBook):
+           - Mode SPREAD (2 halaman): layar lebar & landscape (>=721px & lebar>tinggi)
+           - Mode 1 HALAMAN: HP (semua orientasi) & tablet potret
+           Ukuran --book-w/--book-h dihitung JS agar selalu muat (tak terpotong).
+           Nilai di bawah hanya cadangan sebelum JS jalan.                       */
 
-        /* ---- Tablet (iPad dsb) saat orientasi potret / layar sedang ---- */
-        @media (min-width: 721px) and (max-width: 1024px) {
-            :root { --book-w: 40vw; --book-h: 64vh; --book-h: 64dvh; }
+        /* ---- Mode 1 HALAMAN: hanya SATU sisi per lembar yang dirender ----
+           (tanpa syarat lebar layar) -> berlaku juga untuk tablet potret.
+           Ini mencegah halaman ke-2 nembus/muncul duluan karena
+           backface-visibility 3D yang tidak andal di browser HP. */
+        .book:not(.spread) .leaf .face {
+            display:none;
+            backface-visibility:visible; -webkit-backface-visibility:visible;
         }
+        .book:not(.spread) .leaf .face.face-show { display:flex; }
+        .book:not(.spread) .leaf { left:0; }
+        .book:not(.spread)::after { display:none; }
+        .book:not(.spread) .endpaper { display:none; }
 
-        /* ---- HP & tablet potret: mode 1 halaman ---- */
+        /* ---- Cadangan ukuran untuk HP / layar sempit (sebelum JS jalan) ---- */
         @media (max-width: 720px) {
-            :root {
-                --book-w: min(88vw, 460px);
-                --book-h: min(72vh, 640px);
-                --book-h: min(72dvh, 640px);
-            }
-            .book.spread { width:var(--book-w); }
-            .book .leaf { left:0; }
-            .book.spread::after { display:none; }
-            .endpaper { display:none; }
-            .book-title { top:2.5vh; font-size:.72rem; letter-spacing:.28em; }
-            .book-close { top:2.5vh; left:4vw; width:38px; height:38px; }
-            .flip-btn { width:44px; height:44px; font-size:1.2rem; }
-            .flip-prev { left:1.5vw; } .flip-next { right:1.5vw; }
-            .face { padding:26px 20px 30px; }
+            :root { --book-w: min(88vw, 460px); --book-h: min(78vh, 720px); --book-h: min(78dvh, 720px); }
+            .face { padding:24px 20px 28px; }
             .face h2 { font-size:1.5rem; }
             .face p { font-size:1.08rem; line-height:1.68; }
-            .photo-frame { max-height:48%; border-width:4px; }
-            .book-hint { bottom:2.5vh; font-size:.76rem; }
+            .photo-frame { max-height:46%; border-width:4px; }
+            .book-hint { font-size:.76rem; }
             .dropcap::first-letter { font-size:2.5rem; }
-
-            /* Kunci anti-bug: di mode 1 halaman hanya SATU face yang boleh tampak.
-               Ini menghindari backface-visibility 3D yang sering gagal di
-               browser HP (halaman 2 nembus / ke-render duluan). */
-            .book:not(.spread) .leaf .face { display:none; backface-visibility:visible; -webkit-backface-visibility:visible; }
-            .book:not(.spread) .leaf .face.face-show { display:flex; }
-        }
-        /* HP pendek (landscape / layar kecil) */
-        @media (max-width: 720px) and (max-height: 640px) {
-            :root { --book-h: min(78vh, 520px); --book-h: min(78dvh, 520px); }
-            .face { padding:18px 18px 24px; }
-            .photo-frame { max-height:42%; }
-            .face p { font-size:1rem; }
-            .face h2 { font-size:1.3rem; }
         }
         /* HP sangat sempit */
         @media (max-width: 380px) {
@@ -453,9 +440,22 @@
             .face h2 { font-size:1.25rem; }
             .face p { font-size:.98rem; }
         }
-        /* Layar rendah umum (mis. HP potret pendek) agar tidak terpotong */
-        @media (max-height: 700px) and (min-width: 721px) {
-            :root { --book-h: 70vh; --book-h: 70dvh; }
+        /* HP pendek / landscape rendah */
+        @media (max-height: 460px) {
+            .face { padding:16px 18px 20px; }
+            .photo-frame { max-height:38%; }
+            .face h2 { font-size:1.25rem; }
+            .face p { font-size:1rem; }
+            .book-title { display:none; }
+        }
+
+        /* ---- Penyesuaian elemen UI (tombol/judul) untuk layar kecil ---- */
+        @media (max-width: 900px) {
+            .book-title { top:2.4vh; font-size:.72rem; letter-spacing:.26em; }
+            .book-close { top:2.4vh; left:4vw; width:38px; height:38px; }
+            .flip-btn { width:44px; height:44px; font-size:1.2rem; }
+            .flip-prev { left:1.5vw; } .flip-next { right:1.5vw; }
+            .book-hint { bottom:2.4vh; }
         }
     </style>
 </head>
@@ -794,14 +794,56 @@
             }
         }
 
+        /* Hitung ukuran buku agar SELALU muat di layar nyata (tak terpotong).
+           Menyisakan ruang atas (judul) + bawah (tombol/hint) + margin samping.
+           Halaman dipakai semaksimal mungkin sesuai ruang yang ada. */
+        function sizeBook() {
+            const vw = window.innerWidth;
+            const vh = window.innerHeight;
+            // Spread (2 halaman) hanya di layar lebar LANDSCAPE. Tablet potret
+            // (mis. iPad tegak) tetap 1 halaman karena ruangnya sempit.
+            const spread = vw >= 721 && vw > vh;
+
+            let availW, availH;
+            if (spread) {
+                availW = (vw - 170) / 2;   // sisakan ruang tombol ‹ › kiri-kanan
+                availH = vh - 140;
+            } else {
+                availW = vw - 92;          // sisakan ruang tombol ‹ › di pinggir
+                availH = vh - 140;         // judul atas + hint bawah
+            }
+
+            // Cari ukuran halaman terbesar yang muat, dengan rasio fleksibel
+            // (halaman buku lebih tinggi daripada lebar). Prioritaskan memenuhi
+            // ruang agar tampilan tidak kekecilan.
+            let w = Math.min(availW, 470);
+            let h = availH;
+            // Batas rasio w/h: di layar sempit (HP) halaman boleh lebih ramping
+            // agar tingginya terpakai penuh; di layar lebar jaga tetap proporsional.
+            const narrow = !spread && vw < 600;
+            const rMin = narrow ? 0.50 : 0.62;   // w/h minimum
+            const rMax = narrow ? 0.62 : 0.80;   // w/h maksimum
+            if (w / h > rMax) w = h * rMax;      // terlalu lebar -> sempitkan
+            if (w / h < rMin) {                  // terlalu sempit -> turunkan tinggi
+                h = w / rMin;
+            }
+            w = Math.max(210, w);
+            h = Math.min(h, availH);
+
+            document.documentElement.style.setProperty('--book-w', Math.round(w) + 'px');
+            document.documentElement.style.setProperty('--book-h', Math.round(h) + 'px');
+        }
+
         function applyLayout() {
-            const spread = window.matchMedia('(min-width: 721px)').matches;
+            const spread = window.matchMedia('(min-width:721px) and (orientation:landscape)').matches;
             book.classList.toggle('spread', spread);
+            sizeBook();
             // ulangi render agar penanda face-show ikut diperbarui saat
             // berpindah desktop <-> HP (mis. saat HP dirotasi / resize jendela)
             renderBook();
         }
         window.addEventListener('resize', applyLayout);
+        window.addEventListener('orientationchange', () => setTimeout(applyLayout, 120));
 
         /* ---- Wheel / trackpad ---- */
         const overlay = document.getElementById('bookOverlay');

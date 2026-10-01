@@ -10,12 +10,14 @@ Satu file saja: **index.html**. Buka di browser (HP paling enak).
 
 ## Efek buku (page flip)
 - Buku 3D, tiap halaman bisa dibalik ala buku beneran
-- **Responsif otomatis menyesuaikan layar:**
-  - **Desktop** (≥1024px): tampil **2 halaman** (kiri-kanan) sekaligus
-  - **Tablet / iPad** (721–1024px): tetap 2 halaman, ukuran proporsional
-  - **HP & tablet potret** (≤720px): **1 halaman penuh** (di mode ini hanya
-    tepat **satu sisi** yang dirender, jadi halaman pertama selalu muncul
-    sebagai **cover "Dear You"** — bukan melompat ke halaman 2)
+- **Ukuran halaman dihitung otomatis (JS)** sesuai layar nyata → **selalu muat,
+  tidak terpotong**, dengan ruang untuk judul atas & tombol/hint bawah
+- **Mode otomatis:**
+  - **Desktop / tablet-landscape** (lebar ≥721px & lebar > tinggi): **2 halaman**
+    (kiri-kanan) sekaligus
+  - **HP (semua orientasi) & tablet potret** (mis. iPad tegak): **1 halaman penuh**
+    — dan di mode ini hanya **tepat satu sisi** yang dirender, jadi halaman
+    pertama selalu muncul sebagai **cover "Dear You"** (tidak melompat ke hal 2)
 - Buku dibuka dari keadaan **tertutup** (cover "Dear You" di kanan +
   halaman pendamping *endpaper* di kiri)
 - Setelah semua halaman selesai → muncul **layar tutup buku**
@@ -23,6 +25,8 @@ Satu file saja: **index.html**. Buka di browser (HP paling enak).
 - Cara balik halaman: **swipe** kiri/kanan, **klik/kursor** di sisi kanan-kiri,
   tombol **‹ ›** di pinggir, atau **panah keyboard** (← →). Tombol **Esc** menutup buku.
 - Ada progress bar di atas + hint "geser / klik untuk membalik halaman"
+- Ukuran sudah diuji untuk: iPhone SE/12/13/Pro Max, iPad mini/potret/landscape,
+  sampai laptop — semua pas tanpa terpotong
 
 ## Tampilan estetik (biar nggak kaku & monoton)
 - Tiap halaman punya **warna berbeda** (semua tetap nuansa maroon/hangat):
