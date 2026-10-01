@@ -30,3 +30,8 @@ Thumbs.db
 *.local
 .env
 .env.*
+
+# Audio (file lagu besar — taruh lokal, jangan di-push)
+*.mp3
+*.wav
+*.m4a
