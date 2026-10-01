@@ -2,7 +2,7 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>A Special Gift</title>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;1,500&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
 
@@ -904,6 +904,16 @@
             if (!message) { alert('Tulis pesanmu dulu yaa! ✨'); return; }
             window.open(`https://wa.me/${phone}?text=${encodeURIComponent(message)}`, '_blank');
         }
+
+        /* ---- Inisialisasi awal ----
+           Hitung ukuran + tentukan mode (1/2 halaman) SEKARANG juga, jangan
+           tunggu tombol buku ditekan. Ini memastikan begitu buku dibuka,
+           halaman langsung tampil pas & mulai dari cover (bukan tertinggal
+           pakai ukuran cadangan CSS). */
+        applyLayout();
+        // ulangi sedikit lagi setelah font/foto termuat (ukuran bisa berubah)
+        window.addEventListener('load', applyLayout);
+        setTimeout(applyLayout, 300);
     </script>
 </body>
 </html>
