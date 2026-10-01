@@ -26,14 +26,38 @@ const LEAVES = [
       render: () => (
         <>
           <div className="cover-frame"></div>
+          {/* ornamen halus supaya sampul tidak polos */}
+          <div className="cover-deco" aria-hidden="true">
+            <span className="cov-star s1">✦</span>
+            <span className="cov-star s2">✧</span>
+            <span className="cov-star s3">✦</span>
+            <span className="cov-star s4">✧</span>
+            <span className="cov-star s5">✦</span>
+            <span className="cov-flow tr">❦</span>
+            <span className="cov-flow tl">❦</span>
+            <span className="cov-flow br">❦</span>
+            <span className="cov-flow bl">❦</span>
+          </div>
           <div className="page-inner center">
-            <div className="cover-emblem">❦</div>
+            <div className="cover-sparkles" aria-hidden="true">
+              <i></i>
+              <i></i>
+              <i></i>
+            </div>
+            <div className="cover-emblem">
+              <span className="cov-orn">❦</span>
+            </div>
             <div className="page-eyebrow">Surat kecil dari aku untuk kamu"</div>
             <h2>Dear Tama</h2>
             <div className="rule"></div>
             <p className="soft" style={{ color: "var(--gold-soft)" }}>
               Untuk seseorang yang pernah hidup dikehidupan ku
             </p>
+            <div className="cover-foot" aria-hidden="true">
+              <span className="cov-line"></span>
+              <span className="cov-diamond">✦</span>
+              <span className="cov-line"></span>
+            </div>
           </div>
         </>
       ),
@@ -155,7 +179,7 @@ const LEAVES = [
             <PhotoFrame
               src="/img/foto5.jpg"
               placeholder="img/foto5.jpg"
-              className="photo-tilt"
+              className="photo-tilt photo-foto5"
               hideImgOnError={hideImgOnError}
             />
             <p className="dropcap">
@@ -201,6 +225,18 @@ export default function BirthdayGift() {
   const [introFading, setIntroFading] = useState(false);
   const [mainVisible, setMainVisible] = useState(false);
   const [mainOpacity, setMainOpacity] = useState(0);
+
+  // ---------- Toast catatan Panasea (melayang sebelum klik letter) ----------
+  const [toastVisible, setToastVisible] = useState(false); // sudah waktunya tampil
+  const [toastLeaving, setToastLeaving] = useState(false); // sedang fade-out
+  const [toastDone, setToastDone] = useState(false); // sudah ditutup / di-skip
+  const toastTimer = useRef(null);
+
+  const dismissToast = useCallback(() => {
+    clearTimeout(toastTimer.current);
+    setToastLeaving(true);
+    toastTimer.current = setTimeout(() => setToastDone(true), 450);
+  }, []);
 
   useEffect(() => {
     const t = setTimeout(() => {
@@ -287,8 +323,20 @@ export default function BirthdayGift() {
     [duration]
   );
 
+  // ---------- Toast catatan Panasea ----------
+  // Muncul melayang bentar setelah konten utama tampil, lalu hilang sendiri.
+  // Bisa juga langsung dilewati dengan tombol x / klik "Lanjut".
+  useEffect(() => {
+    if (!mainVisible || toastDone) return;
+    const t = setTimeout(() => setToastVisible(true), 900);
+    const auto = setTimeout(() => dismissToast(), 12000);
+    return () => {
+      clearTimeout(t);
+      clearTimeout(auto);
+    };
+  }, [mainVisible, toastDone, dismissToast]);
+
   // ---------- AUTOPLAY ----------
-  // Begitu konten utama tampil (setelah intro), langsung coba putar lagu.
   // Browser modern melarang autoplay BERSUARA tanpa interaksi user, jadi kalau
   // diblokir kita pasang listener sekali-pakai: pada sentuhan/klik/tombol
   // pertama apa pun, lagu langsung diputar otomatis.
@@ -748,7 +796,7 @@ export default function BirthdayGift() {
           <div className="container">
             <h1>Happy birthday Tama</h1>
             <p className="subtitle">Dari aku untuk satria bukit pratama</p>
-            <p className="subtitle">"Don't forget to listen to the Panasea song at 56 seconds :)"</p>
+            {/* catatan panasea dipindah jadi toast melayang (lihat bawah) */}
 
             <div className="playlist-wrapper">
               <div className={`song-art${playing ? " spinning" : ""}`} aria-hidden="true">
@@ -843,6 +891,36 @@ export default function BirthdayGift() {
 
             <p className="tap-hint">Tap the cards to open</p>
           </div>
+        </div>
+      )}
+
+      {/* ===================== TOAST CATATAN PANASEA ===================== */}
+      {toastVisible && !toastDone && (
+        <div
+          className={`panasea-toast${toastLeaving ? " leaving" : ""}`}
+          role="status"
+          aria-live="polite"
+        >
+          <div className="toast-note">
+            <span className="toast-icon" aria-hidden="true">
+              ♪
+            </span>
+            <div className="toast-body">
+              <b className="toast-title">Sebelum mulai…</b>
+              <p>Don&apos;t forget to listen to the Panasea song at 56 seconds :)</p>
+            </div>
+            <button
+              className="toast-skip"
+              onClick={dismissToast}
+              aria-label="Lewati catatan"
+              title="Lewati"
+            >
+              ×
+            </button>
+          </div>
+          <button className="toast-go" onClick={dismissToast}>
+            Lanjut →
+          </button>
         </div>
       )}
 
