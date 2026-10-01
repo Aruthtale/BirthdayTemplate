@@ -400,36 +400,62 @@
         .modal-card p { line-height:1.8; color:var(--tan-soft); font-weight:500; text-align:center; font-size:.9rem; }
         .close-btn { position:absolute; top:12px; right:18px; font-size:2rem; color:rgba(246,231,216,.4); cursor:pointer; z-index:10; }
 
-        /* ============ RESPONSIVE: HP = 1 halaman ============ */
+        /* ============ RESPONSIVE ============
+           Desktop  (>=1024px): spread 2 halaman, cover kiri+kanan
+           Tablet/iPad (721-1023px landscape & 721px+) : spread, ukuran menyesuaikan
+           HP & tablet potret (<=720px): 1 halaman penuh, tepat 1 face tampak       */
+
+        /* ---- Tablet (iPad dsb) saat orientasi potret / layar sedang ---- */
+        @media (min-width: 721px) and (max-width: 1024px) {
+            :root { --book-w: 40vw; --book-h: 64vh; --book-h: 64dvh; }
+        }
+
+        /* ---- HP & tablet potret: mode 1 halaman ---- */
         @media (max-width: 720px) {
-            :root { --book-w: 86vw; --book-h: 70vh; --book-h: 70dvh; }
+            :root {
+                --book-w: min(88vw, 460px);
+                --book-h: min(72vh, 640px);
+                --book-h: min(72dvh, 640px);
+            }
             .book.spread { width:var(--book-w); }
             .book .leaf { left:0; }
             .book.spread::after { display:none; }
+            .endpaper { display:none; }
             .book-title { top:2.5vh; font-size:.72rem; letter-spacing:.28em; }
-            .book-close { top:2.5vh; left:4vw; width:36px; height:36px; }
-            .flip-btn { width:42px; height:42px; font-size:1.2rem; }
-            .flip-prev { left:1vw; } .flip-next { right:1vw; }
+            .book-close { top:2.5vh; left:4vw; width:38px; height:38px; }
+            .flip-btn { width:44px; height:44px; font-size:1.2rem; }
+            .flip-prev { left:1.5vw; } .flip-next { right:1.5vw; }
             .face { padding:26px 20px 30px; }
-            .face h2 { font-size:1.45rem; }
-            .face p { font-size:1.05rem; line-height:1.65; }
-            .photo-frame { max-height:50%; border-width:4px; }
+            .face h2 { font-size:1.5rem; }
+            .face p { font-size:1.08rem; line-height:1.68; }
+            .photo-frame { max-height:48%; border-width:4px; }
             .book-hint { bottom:2.5vh; font-size:.76rem; }
             .dropcap::first-letter { font-size:2.5rem; }
+
+            /* Kunci anti-bug: di mode 1 halaman hanya SATU face yang boleh tampak.
+               Ini menghindari backface-visibility 3D yang sering gagal di
+               browser HP (halaman 2 nembus / ke-render duluan). */
+            .book:not(.spread) .leaf .face { display:none; backface-visibility:visible; -webkit-backface-visibility:visible; }
+            .book:not(.spread) .leaf .face.face-show { display:flex; }
         }
-        /* HP kecil / layar pendek: kecilkan lagi agar tidak kepotong */
+        /* HP pendek (landscape / layar kecil) */
         @media (max-width: 720px) and (max-height: 640px) {
-            :root { --book-h: 74vh; --book-h: 74dvh; }
-            .face { padding:20px 18px 26px; }
-            .photo-frame { max-height:44%; }
+            :root { --book-h: min(78vh, 520px); --book-h: min(78dvh, 520px); }
+            .face { padding:18px 18px 24px; }
+            .photo-frame { max-height:42%; }
             .face p { font-size:1rem; }
+            .face h2 { font-size:1.3rem; }
         }
         /* HP sangat sempit */
         @media (max-width: 380px) {
-            :root { --book-w: 90vw; }
-            .face { padding:20px 16px 26px; }
-            .face h2 { font-size:1.3rem; }
+            :root { --book-w: min(92vw, 380px); }
+            .face { padding:20px 16px 24px; }
+            .face h2 { font-size:1.25rem; }
             .face p { font-size:.98rem; }
+        }
+        /* Layar rendah umum (mis. HP potret pendek) agar tidak terpotong */
+        @media (max-height: 700px) and (min-width: 721px) {
+            :root { --book-h: 70vh; --book-h: 70dvh; }
         }
     </style>
 </head>
@@ -683,6 +709,13 @@
                 // z-index: leaf belum dibalik (kolom kanan) -> indeks kecil makin ke depan
                 //           leaf sudah dibalik (kolom kiri)  -> indeks besar makin ke depan
                 leaf.style.zIndex = (i < flipped) ? (i + 1) : (total - i);
+                // tandai face mana yang HARUS tampak (dipakai mode 1-halaman/HP
+                // supaya tidak bergantung pada backface-visibility 3D yang rapuh)
+                const front = leaf.querySelector('.face:not(.back)');
+                const back = leaf.querySelector('.face.back');
+                const showBack = i < flipped;
+                if (front) front.classList.toggle('face-show', !showBack);
+                if (back) back.classList.toggle('face-show', showBack);
             });
             bookProgress.style.width = (flipped / total * 100) + '%';
             flipPrevBtn.disabled = flipped === 0;
@@ -764,6 +797,9 @@
         function applyLayout() {
             const spread = window.matchMedia('(min-width: 721px)').matches;
             book.classList.toggle('spread', spread);
+            // ulangi render agar penanda face-show ikut diperbarui saat
+            // berpindah desktop <-> HP (mis. saat HP dirotasi / resize jendela)
+            renderBook();
         }
         window.addEventListener('resize', applyLayout);
 

@@ -10,8 +10,12 @@ Satu file saja: **index.html**. Buka di browser (HP paling enak).
 
 ## Efek buku (page flip)
 - Buku 3D, tiap halaman bisa dibalik ala buku beneran
-- **Desktop**: tampil 2 halaman (kiri-kanan) sekaligus
-- **HP**: 1 halaman penuh (sudah dioptimalkan ukurannya)
+- **Responsif otomatis menyesuaikan layar:**
+  - **Desktop** (≥1024px): tampil **2 halaman** (kiri-kanan) sekaligus
+  - **Tablet / iPad** (721–1024px): tetap 2 halaman, ukuran proporsional
+  - **HP & tablet potret** (≤720px): **1 halaman penuh** (di mode ini hanya
+    tepat **satu sisi** yang dirender, jadi halaman pertama selalu muncul
+    sebagai **cover "Dear You"** — bukan melompat ke halaman 2)
 - Buku dibuka dari keadaan **tertutup** (cover "Dear You" di kanan +
   halaman pendamping *endpaper* di kiri)
 - Setelah semua halaman selesai → muncul **layar tutup buku**
