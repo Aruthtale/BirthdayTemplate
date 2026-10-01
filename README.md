@@ -13,11 +13,11 @@ Satu file saja: **index.html**. Buka di browser (HP paling enak).
 - **Ukuran halaman dihitung otomatis (JS)** sesuai layar nyata → **selalu muat,
   tidak terpotong**, dengan ruang untuk judul atas & tombol/hint bawah
 - **Mode otomatis:**
-  - **Desktop / tablet-landscape** (lebar ≥721px & lebar > tinggi): **2 halaman**
-    (kiri-kanan) sekaligus
-  - **HP (semua orientasi) & tablet potret** (mis. iPad tegak): **1 halaman penuh**
-    — dan di mode ini hanya **tepat satu sisi** yang dirender, jadi halaman
-    pertama selalu muncul sebagai **cover "Dear You"** (tidak melompat ke hal 2)
+  - **HP & tablet (semua orientasi, lebar < 1100px)**: **1 halaman penuh**
+    — 1 lembar = 1 halaman. Di mode ini hanya **tepat satu sisi** yang dirender,
+    jadi halaman pertama selalu muncul sebagai **cover "Dear You"**
+    (tidak melompat ke halaman lain, tidak tampil 2 halaman sekaligus)
+  - **Laptop / desktop** (lebar ≥1100px & mendatar): **2 halaman** (kiri-kanan)
 - Buku dibuka dari keadaan **tertutup** (cover "Dear You" di kanan +
   halaman pendamping *endpaper* di kiri)
 - Setelah semua halaman selesai → muncul **layar tutup buku**

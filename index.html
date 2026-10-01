@@ -807,12 +807,13 @@
             const vw = Math.round(vv ? vv.width : window.innerWidth);
             const vh = Math.round(vv ? vv.height : window.innerHeight);
 
-            // Spread HANYA jika: layar cukup lebar, orientasi mendatar, DAN
-            // tiap halaman masih dapat lebar layak (>=200px) setelah dipotong
-            // ruang tombol. Ini mencegah "2 halaman" dipaksa di layar sempit.
-            const wideEnough = vw >= 760 && vw > vh;
+            // ===== ATURAN TEGAS: 1 lembar = 1 HALAMAN untuk HP/tablet =====
+            // Mode 2 halaman (spread) HANYA untuk layar BESAR (laptop/desktop
+            // >= 1100px & mendatar). SEMUA HP & tablet (termasuk iPad) SELALU
+            // 1 halaman penuh, termasuk walau dipakai mendatar (landscape).
+            const BIG = vw >= 1100 && vw > vh;      // laptop/desktop saja
             const perPage = (vw - 170) / 2;
-            const spread = wideEnough && perPage >= 200;
+            const spread = BIG && perPage >= 380;   // tiap halaman tetap lega
 
             let availW, availH;
             if (spread) {
