@@ -40,4 +40,6 @@ next-env.d.ts
 *.mp3
 *.wav
 *.m4a
-public/*.mp3
+
+# Kecuali lagu yang dipakai di app (harus ikut deploy ke Vercel)
+!public/panasea.mp3
