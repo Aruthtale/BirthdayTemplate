@@ -567,6 +567,33 @@
            belakang ditampilkan datar, bukan sebagai sisi terbalik) */
         .book:not(.spread) .single-page.back { transform:none; }
 
+        /* --- PENTING: halaman bertema gelap (sampul & halaman tutup) harus
+           tetap gelap di mode 1-halaman. Tanpa ini, background "kertas terang"
+           milik .single-page menutupi warna gelapnya sehingga teks krem jadi
+           nggak kebaca (warna nabrak). --- */
+        .book:not(.spread) .single-page.cover-face {
+            background:
+              radial-gradient(circle at 30% 20%, rgba(201,163,92,.18), transparent 45%),
+              linear-gradient(150deg,#6b1218,#3a080c);
+            color:var(--cream);
+            box-shadow:0 20px 60px rgba(0,0,0,.7), inset 0 0 60px rgba(0,0,0,.35);
+        }
+        .book:not(.spread) .single-page.the-end {
+            background:
+              radial-gradient(circle at 50% 45%, rgba(201,163,92,.14), transparent 55%),
+              linear-gradient(160deg,#4a0a0f,#2b0608 70%);
+            color:var(--cream);
+            box-shadow:0 20px 60px rgba(0,0,0,.7), inset 0 0 60px rgba(0,0,0,.4);
+        }
+        /* teks pada sampul/tutup tetap terang di mode 1-halaman */
+        .book:not(.spread) .single-page.cover-face h2,
+        .book:not(.spread) .single-page.the-end h2 { color:var(--cream); }
+        .book:not(.spread) .single-page.cover-face .page-eyebrow,
+        .book:not(.spread) .single-page.the-end .page-eyebrow { color:var(--gold-soft); }
+        .book:not(.spread) .single-page.cover-face .page-inner,
+        .book:not(.spread) .single-page.the-end .page-inner { color:var(--cream); }
+        .book:not(.spread) .single-page.cover-face .rule { background:linear-gradient(90deg,transparent,var(--gold-soft),transparent); }
+
         /* ---- transisi halus saat pindah halaman (slide berarah) ---- */
         .book:not(.spread) .single-page.slide-next {
             animation:pageSlideNext .5s cubic-bezier(.2,.75,.3,1) both;

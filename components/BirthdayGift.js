@@ -219,28 +219,42 @@ export default function BirthdayGift() {
     }
   }, []);
 
-  // Sinkronkan progress bar & waktu dengan lagu yang sedang diputar
+  // Sinkronkan progress bar & waktu dengan lagu yang sedang diputar.
+  // PENTING: <audio> baru ter-mount setelah intro (mainVisible = true), jadi
+  // efek ini WAJIB bergantung pada mainVisible — kalau tidak, ref-nya masih null
+  // saat efek pertama jalan dan listener tak pernah terpasang (waktu stuck 0:00).
   useEffect(() => {
+    if (!mainVisible) return;
     const music = audioRef.current;
     if (!music) return;
+    const syncDur = () => {
+      const d = music.duration;
+      if (isFinite(d) && d > 0) setDuration(d);
+    };
     const onTime = () => setCurTime(music.currentTime || 0);
-    const onMeta = () => setDuration(music.duration || 0);
     const onPlay = () => setPlaying(true);
     const onPause = () => setPlaying(false);
     music.addEventListener("timeupdate", onTime);
-    music.addEventListener("loadedmetadata", onMeta);
-    music.addEventListener("durationchange", onMeta);
+    music.addEventListener("loadedmetadata", syncDur);
+    music.addEventListener("durationchange", syncDur);
+    music.addEventListener("canplay", syncDur);
     music.addEventListener("play", onPlay);
     music.addEventListener("pause", onPause);
-    if (music.duration) setDuration(music.duration);
+    syncDur();
+    if (!(isFinite(music.duration) && music.duration > 0)) {
+      try {
+        music.load();
+      } catch (e) {}
+    }
     return () => {
       music.removeEventListener("timeupdate", onTime);
-      music.removeEventListener("loadedmetadata", onMeta);
-      music.removeEventListener("durationchange", onMeta);
+      music.removeEventListener("loadedmetadata", syncDur);
+      music.removeEventListener("durationchange", syncDur);
+      music.removeEventListener("canplay", syncDur);
       music.removeEventListener("play", onPlay);
       music.removeEventListener("pause", onPause);
     };
-  }, []);
+  }, [mainVisible]);
 
   // Klik progress bar untuk seek (lompat ke posisi tertentu)
   const seekMusic = useCallback(
@@ -706,7 +720,23 @@ export default function BirthdayGift() {
               </div>
             </div>
 
-            <audio id="myMusic" ref={audioRef} loop>
+            <audio
+              id="myMusic"
+              ref={audioRef}
+              loop
+              preload="metadata"
+              onLoadedMetadata={(e) => {
+                const d = e.currentTarget.duration;
+                if (isFinite(d) && d > 0) setDuration(d);
+              }}
+              onDurationChange={(e) => {
+                const d = e.currentTarget.duration;
+                if (isFinite(d) && d > 0) setDuration(d);
+              }}
+              onTimeUpdate={(e) => setCurTime(e.currentTarget.currentTime || 0)}
+              onPlay={() => setPlaying(true)}
+              onPause={() => setPlaying(false)}
+            >
               <source src="/panasea.mp3" type="audio/mpeg" />
             </audio>
 
