@@ -119,13 +119,17 @@ const LEAVES = [
             <div className="flourish">
               <span>✦</span>
             </div>
-            <PhotoFrame
-              src="/foto3.jpg"
-              placeholder="foto3.jpg"
-              hideImgOnError={hideImgOnError}
-            />
             <p className="dropcap">
               Tak hanya indah dipandang, namun menenangkan saat dikenang.
+            </p>
+            <p>
+              Ada hal-hal yang tak perlu dijelaskan dengan kata-kata, cukup dirasakan
+              dan dibiarkan tumbuh perlahan. Seperti doa yang tak pernah kamu dengar,
+              tetapi selalu hadir di setiap langkahmu.
+            </p>
+            <p className="soft">
+              Semoga tahun ini membawa lebih banyak tawa daripada air mata, dan
+              lebih banyak alasan untuk bersyukur daripada alasan untuk menyerah.
             </p>
           </div>
           <div className="page-num">4</div>
@@ -143,14 +147,14 @@ const LEAVES = [
           <div className="page-inner">
             <div className="page-eyebrow">Halaman 5</div>
             <h2>
-              <span className="accent">Bunga</span>
+              A <span className="accent">Flowers</span>
             </h2>
             <div className="flourish">
               <span>✦</span>
             </div>
             <PhotoFrame
-              src="/foto4.jpg"
-              placeholder="foto4.jpg"
+              src="/img/foto5.jpg"
+              placeholder="img/foto5.jpg"
               className="photo-tilt"
               hideImgOnError={hideImgOnError}
             />

@@ -361,12 +361,18 @@
             .photo-frame.photo-foto2 { width:86%; max-height:42%; }
             .photo-frame.photo-tilt.r.photo-foto2 { transform:rotate(4deg) !important; }
         }
-        /* foto halaman terakhir (Karena Ada Manusia) — diperkecil ~15% */
+        /* foto halaman terakhir (Karena Ada Manusia) — bingkai mengikuti bentuk foto asli
+           (bukan kotak 1:1). Tinggi otomatis sesuai rasio foto, tanpa di-crop. */
         .photo-frame.photo-lastpic {
-            width:85%; max-height:48%;
+            width:85%; max-height:none; aspect-ratio:auto;
+            padding:0; display:block; flex:0 0 auto;
+        }
+        .photo-frame.photo-lastpic img {
+            width:100%; height:auto; object-fit:contain;
+            border-radius:4px; display:block;
         }
         @media (max-width: 720px) {
-            .photo-frame.photo-lastpic { width:82%; max-height:42%; }
+            .photo-frame.photo-lastpic { width:82%; }
         }
 
         /* ---- halaman sampul (cover book) ---- */
