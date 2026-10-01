@@ -16,6 +16,7 @@
             --pg-rose:   #ecd3d3;   /* pink redup */
             --pg-sand:   #f5e7cf;   /* pasir */
             --pg-mauve:  #e3d3dd;   /* ungu pucat */
+            --pg-peach:  #f0ddca;   /* peach lembut (halaman maaf) */
             --gold:      #c9a35c;
             --gold-soft: #e2c98f;
             --book-w: 340px;   /* lebar 1 halaman */
@@ -256,6 +257,7 @@
         .face.theme-rose  { background:radial-gradient(circle at 18% 12%, rgba(255,255,255,.55), transparent 40%), radial-gradient(circle at 85% 90%, rgba(120,60,70,.12), transparent 45%), linear-gradient(135deg, rgba(0,0,0,.04), transparent 32%), var(--pg-rose); }
         .face.theme-sand  { background:radial-gradient(circle at 18% 12%, rgba(255,255,255,.55), transparent 40%), radial-gradient(circle at 85% 90%, rgba(120,90,40,.12), transparent 45%), linear-gradient(135deg, rgba(0,0,0,.04), transparent 32%), var(--pg-sand); }
         .face.theme-mauve { background:radial-gradient(circle at 18% 12%, rgba(255,255,255,.55), transparent 40%), radial-gradient(circle at 85% 90%, rgba(90,70,110,.13), transparent 45%), linear-gradient(135deg, rgba(0,0,0,.04), transparent 32%), var(--pg-mauve); }
+        .face.theme-sorry { background:radial-gradient(circle at 18% 12%, rgba(255,255,255,.55), transparent 40%), radial-gradient(circle at 85% 90%, rgba(120,90,40,.12), transparent 45%), linear-gradient(135deg, rgba(0,0,0,.04), transparent 32%), var(--pg-peach); }
 
         /* sudut ornamen emas (di tiap halaman) */
         .face .corner { position:absolute; width:26px; height:26px; border-color:var(--gold); opacity:.55; pointer-events:none; }
@@ -692,27 +694,33 @@
 
         /* ---- Cadangan ukuran untuk HP / layar sempit (sebelum JS jalan) ---- */
         @media (max-width: 720px) {
-            :root { --book-w: min(88vw, 460px); --book-h: min(78vh, 720px); --book-h: min(78dvh, 720px); }
-            .face { padding:24px 20px 28px; }
-            .face h2 { font-size:1.5rem; }
-            .face p { font-size:1.08rem; line-height:1.68; }
-            .photo-frame { max-height:46%; border-width:4px; }
+            :root { --book-w: min(88vw, 460px); --book-h: min(80vh, 740px); --book-h: min(80dvh, 740px); }
+            .face { padding:22px 20px 30px; }
+            .face h2 { font-size:1.35rem; }
+            .face p { font-size:1rem; line-height:1.62; }
+            .photo-frame { max-height:44%; border-width:4px; }
             .book-hint { font-size:.76rem; }
-            .dropcap::first-letter { font-size:2.5rem; }
+            .dropcap::first-letter { font-size:2.2rem; }
+            /* lebih rapi ala surat asli: baris agak renggang & antar-paragraf konsisten */
+            .face .page-inner { line-height:1.62; }
+            .face h2 { margin-bottom:6px; }
+            .face p { margin-bottom:9px; }
         }
         /* HP sangat sempit */
         @media (max-width: 380px) {
             :root { --book-w: min(92vw, 380px); }
-            .face { padding:20px 16px 24px; }
-            .face h2 { font-size:1.25rem; }
-            .face p { font-size:.98rem; }
+            .face { padding:18px 15px 24px; }
+            .face h2 { font-size:1.15rem; }
+            .face p { font-size:.92rem; line-height:1.58; }
+            .dropcap::first-letter { font-size:1.9rem; }
+            .page-eyebrow { font-size:.76rem; }
         }
         /* HP pendek / landscape rendah */
         @media (max-height: 460px) {
             .face { padding:16px 18px 20px; }
             .photo-frame { max-height:38%; }
-            .face h2 { font-size:1.25rem; }
-            .face p { font-size:1rem; }
+            .face h2 { font-size:1.15rem; }
+            .face p { font-size:.95rem; }
             .book-title { display:none; }
         }
 

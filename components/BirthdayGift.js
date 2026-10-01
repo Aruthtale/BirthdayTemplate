@@ -71,15 +71,15 @@ const LEAVES = [
           <div className="page-inner">
             <div className="page-eyebrow">Halaman 2</div>
             <h2>
-              Teruntuk <span className="accent">Pemilik Mata Indah</span>
+              Happy Birthday and <span className="accent">Happy Sweet 19 </span> Tama 🤍
             </h2>
             <div className="flourish">
               <span>✦</span>
             </div>
             <p className="dropcap">
-              Yang diam-diam membuat dunia terasa jauh lebih tenang.
+              First of all, i just wanna say thank you. Thank you for all the little things you've ever done for me. Thank you for the conversations, the random moments, the laughs, and all the memories that pernah kita punya.
             </p>
-            <p>
+            {/* <p>
               Ada kalanya seseorang hadir bukan untuk mengubah seluruh hidupmu,
               melainkan untuk membuat hal-hal kecil terasa lebih berarti. Kamu
               salah satunya. Lewat caramu memandang, caramu tersenyum, dan caramu
@@ -93,7 +93,7 @@ const LEAVES = [
             <p className="soft">
               Mata indahmu bukan sekadar tentang warna, tetapi tentang cara ia
               melihat dunia — dan itu yang paling sulit untuk dilupakan.
-            </p>
+            </p> */}
           </div>
           <div className="page-num">2</div>
         </>
@@ -110,7 +110,7 @@ const LEAVES = [
           <div className="page-inner">
             <div className="page-eyebrow">Halaman 3</div>
             <h2>
-              Happy birthday <span className="accent">&</span> Thank You
+              Thank<span className="accent">You</span>  
             </h2>
             <div className="flourish">
               <span>✦</span>
@@ -122,10 +122,50 @@ const LEAVES = [
               hideImgOnError={hideImgOnError}
             />
             <p className="dropcap">
-              Aku mulai jatuh pada cara matamu memandang semesta.
+              Kamu adalah cowo pertama yg bisa bawa aku ke gunung untuk pertama kalinya, terimakasih yaaa. 
+            </p>
+            <p>
+              take care yaa Tama.
+            </p>
+            <p>
+              Happy birthday once again. I hope you get the happiness you deserve, wherever life takes you.
+            </p>
+            <p className="soft">
+              — from someone who once cared about you, sincerely. 🤍
             </p>
           </div>
           <div className="page-num">3</div>
+        </>
+      ),
+    },
+    {
+      className: "face theme-sorry",
+      render: ({ hideImgOnError }) => (
+        <>
+          <div className="corner tl"></div>
+          <div className="corner br"></div>
+          <div className="page-inner">
+            <div className="page-eyebrow">Halaman 4</div>
+            <h2>
+              Sorry <span className="accent">Say</span>
+            </h2>
+            <div className="flourish">
+              <span>✦</span>
+            </div>
+            <p className="dropcap">
+              I also wanna say sorry, Tama.
+            </p>
+            <p>
+              Sorry for the things I did or said that hurt you. I know there were moments when my words or my attitude weren&apos;t the way they should&apos;ve been, and I genuinely regret the parts where I made you feel hurt or disappointed.
+            </p>
+            <p className="soft">
+              aku nulis ini bukan untum mengulang semuanya atau buat minta apa-apa.
+            </p>
+            <p>
+              I just wanted to say that i am sorry, sincerely.
+            </p>
+          </div>
+          <div className="page-num">4</div>
         </>
       ),
     },
@@ -136,7 +176,7 @@ const LEAVES = [
           <div className="corner tl"></div>
           <div className="corner br"></div>
           <div className="page-inner">
-            <div className="page-eyebrow">Halaman 4</div>
+            <div className="page-eyebrow">Halaman 5</div>
             <h2>
               My wishes <span className="accent">For you</span>
             </h2>
@@ -144,19 +184,16 @@ const LEAVES = [
               <span>✦</span>
             </div>
             <p className="dropcap">
-              Tak hanya indah dipandang, namun menenangkan saat dikenang.
+              For your new age, I wish you a lot of good things.
             </p>
             <p>
-              Ada hal-hal yang tak perlu dijelaskan dengan kata-kata, cukup dirasakan
-              dan dibiarkan tumbuh perlahan. Seperti doa yang tak pernah kamu dengar,
-              tetapi selalu hadir di setiap langkahmu.
+              Semoga sehat terus, dimudahkan dalam urusan kamu, dilancarkan rezekinya, dan dipertemukan dengan banyak hal baik, dikelilingi orang2 baik, orang2 yang sayang sama kamu yaa.
             </p>
             <p className="soft">
-              Semoga tahun ini membawa lebih banyak tawa daripada air mata, dan
-              lebih banyak alasan untuk bersyukur daripada alasan untuk menyerah.
+              Semoga kamu bisa jadi versi diri kamu yang kamu banggakan. Take care of yourself, take your chances, learn from your mistakes, and don't be afraid to start again.
             </p>
           </div>
-          <div className="page-num">4</div>
+          <div className="page-num">5</div>
         </>
       ),
     },
@@ -169,12 +206,11 @@ const LEAVES = [
           <div className="corner tl"></div>
           <div className="corner br"></div>
           <div className="page-inner">
-            <div className="page-eyebrow">Halaman 5</div>
+            <div className="page-eyebrow">Halaman 6</div>
             <h2>
               A <span className="accent">Flowers</span>
             </h2>
             <div className="flourish">
-              <span>✦</span>
             </div>
             <PhotoFrame
               src="/img/foto5.jpg"
@@ -183,10 +219,19 @@ const LEAVES = [
               hideImgOnError={hideImgOnError}
             />
             <p className="dropcap">
-              Sunyi, terkesan jauh, namun mustahil untuk berhenti diindahkan.
+              Mungkin buat kamu ini bunga ya cuman bunga. bisa layu, bisa dibuang, bisa dilupakan.
+            </p>
+            <p>
+              tapi buat aku waktu itu, rasanya beda. itu semua bisa jadi salah satu memori yang paling susah hilang. 
+            </p>
+            <p className="soft">
+              btw thank you for being a part of one chapter of my life. There were good memories, difficult moments, lessons, and things I'll probably remember for a long time.
+            </p>
+            <p>
+              aku gatau nanti kita akan jadi apa setelah ini, dan aku juga gamau memaksa sebuah jawaban. For now, i just hope we're both able to move forward and become better versions of ourselves. 
             </p>
           </div>
-          <div className="page-num">5</div>
+          <div className="page-num">6</div>
         </>
       ),
     },
@@ -794,7 +839,7 @@ export default function BirthdayGift() {
           style={{ display: "flex", opacity: mainOpacity }}
         >
           <div className="container">
-            <h1>Happy birthday Tama</h1>
+            <h1>Happy Birthday Tama</h1>
             <p className="subtitle">Dari aku untuk satria bukit pratama</p>
             {/* catatan panasea dipindah jadi toast melayang (lihat bawah) */}
 
