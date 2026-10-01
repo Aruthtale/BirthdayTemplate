@@ -397,9 +397,9 @@
             .photo-frame.photo-foto5 img { max-width:60vw; max-height:30vh; }
         }
 
-        /* ---- TOAST CATATAN PANASEA (melayang, bisa di-skip) ---- */
+        /* ---- TOAST CATATAN PANASEA (melayang di TENGAH layar, bisa di-skip) ---- */
         .panasea-toast {
-            position:fixed; top:26px; left:50%; transform:translateX(-50%);
+            position:fixed; top:50%; left:50%; transform:translate(-50%, -50%);
             z-index:1200; width:min(92vw, 420px);
             display:flex; flex-direction:column; gap:12px;
             padding:16px 16px 14px;
@@ -414,11 +414,11 @@
         }
         .panasea-toast.leaving { animation:toastOut .45s ease forwards; }
         @keyframes toastIn {
-            from { opacity:0; transform:translate(-50%, -14px) scale(.97); }
-            to { opacity:1; transform:translate(-50%, 0) scale(1); }
+            from { opacity:0; transform:translate(-50%, calc(-50% + 16px)) scale(.94); }
+            to { opacity:1; transform:translate(-50%, -50%) scale(1); }
         }
         @keyframes toastOut {
-            to { opacity:0; transform:translate(-50%, -14px) scale(.97); }
+            to { opacity:0; transform:translate(-50%, calc(-50% + 16px)) scale(.94); }
         }
         .toast-note { display:flex; align-items:flex-start; gap:12px; }
         .toast-icon {
@@ -458,7 +458,7 @@
         }
         .toast-go:hover { transform:translateY(-1px); filter:brightness(1.05); }
         @media (max-width: 720px) {
-            .panasea-toast { top:14px; padding:14px; }
+            .panasea-toast { padding:14px; }
             .toast-body p { font-size:.82rem; }
         }
 

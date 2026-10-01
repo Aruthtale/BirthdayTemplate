@@ -147,7 +147,7 @@ const LEAVES = [
           <div className="page-inner">
             <div className="page-eyebrow">Halaman 4</div>
             <h2>
-              Sorry <span className="accent">Say</span>
+              Sorry <span className="accent">...</span>
             </h2>
             <div className="flourish">
               <span>✦</span>
