@@ -128,10 +128,10 @@ const LEAVES = [
               take care yaa Tama.
             </p>
             <p>
-              Happy birthday once again. I hope you get the happiness you deserve, wherever life takes you.
+             ini last dari aku, and sorry ngehubungin lu lagi, aku cmn mau say happy birthday doang.
             </p>
             <p className="soft">
-              — from someone who once cared about you, sincerely. 🤍
+              — from strangers to friends and friends to strangers again, thank you.
             </p>
           </div>
           <div className="page-num">3</div>
