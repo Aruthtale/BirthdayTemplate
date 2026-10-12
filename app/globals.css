@@ -351,16 +351,29 @@
         /* foto miring ala scrapbook */
         .photo-tilt { transform:rotate(-2.5deg); }
         .photo-tilt.r { transform:rotate(2deg); }
-        /* foto halaman 3 (Teruntuk Pemilik Mata Indah) — sedikit lebih kecil & lebih miring */
+        /* foto halaman 3 (Thank You) — bingkai mengikuti RASIO ASLI foto (portrait),
+           foto tampil UTUH tanpa di-crop, dan ukurannya proporsional terhadap
+           tinggi buku (--book-h) sehingga konsisten di semua ukuran layar. */
         .photo-frame.photo-foto2 {
-            width:82%; max-height:48%; margin:4px auto 14px;
+            display:inline-block; width:auto; max-width:84%;
+            align-self:center;                 /* jangan melar selebar halaman */
+            aspect-ratio:auto; max-height:none;
+            flex:0 0 auto;
+            margin:8px auto 16px;
+            overflow:visible;                   /* sudut foto miring tak terpotong */
+        }
+        .photo-frame.photo-foto2 img {
+            width:auto; height:auto;
+            max-width:100%;
+            max-height:calc(var(--book-h) * 0.38);
+            object-fit:contain; border-radius:2px; display:block;
         }
         /* !important agar rotasi tidak ditimpa animasi pageIn (translateY) */
         .photo-frame.photo-tilt.r.photo-foto2 {
             transform:rotate(5deg) !important;
         }
         @media (max-width: 720px) {
-            .photo-frame.photo-foto2 { width:86%; max-height:42%; }
+            .photo-frame.photo-foto2 { max-width:88%; }
             .photo-frame.photo-tilt.r.photo-foto2 { transform:rotate(4deg) !important; }
         }
         /* foto halaman terakhir (Karena Ada Manusia) — bingkai mengikuti bentuk foto asli

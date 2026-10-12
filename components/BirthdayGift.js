@@ -139,7 +139,7 @@ const LEAVES = [
       ),
     },
     {
-      className: "face theme-sorry",
+      className: "face back theme-sorry",
       render: ({ hideImgOnError }) => (
         <>
           <div className="corner tl"></div>
@@ -169,8 +169,10 @@ const LEAVES = [
         </>
       ),
     },
+  ],
+  [
     {
-      className: "face back theme-sand",
+      className: "face theme-sand",
       render: ({ hideImgOnError }) => (
         <>
           <div className="corner tl"></div>
@@ -197,10 +199,8 @@ const LEAVES = [
         </>
       ),
     },
-  ],
-  [
     {
-      className: "face theme-mauve",
+      className: "face back theme-mauve",
       render: ({ hideImgOnError }) => (
         <>
           <div className="corner tl"></div>
@@ -235,8 +235,10 @@ const LEAVES = [
         </>
       ),
     },
+  ],
+  [
     {
-      className: "face back the-end",
+      className: "face the-end",
       render: ({ hideImgOnError }) => (
         <div className="page-inner center">
           <div className="end-ornament">❧</div>
@@ -435,9 +437,12 @@ export default function BirthdayGift() {
 
   // ---------- Book state ----------
   const TOTAL_LEAVES = LEAVES.length;
-  // Mode 1-halaman: tiap SISI = 1 halaman. Urutan: L0.front, L0.back, L1.front,
-  // L1.back, ... -> TOTAL_PAGES = TOTAL_LEAVES * 2.
-  const TOTAL_PAGES = TOTAL_LEAVES * 2;
+  // Daftar datar SEMUA sisi halaman, urut sesuai LEAVES (depan lalu belakang
+  // tiap lembar). Mode 1-halaman memakai daftar ini, BUKAN asumsi "2 sisi per
+  // lembar" — supaya lembar yang hanya punya 1 sisi (halaman penutup) tidak
+  // memunculkan halaman kosong di akhir.
+  const PAGE_FACES = LEAVES.flat();
+  const TOTAL_PAGES = PAGE_FACES.length;
   const bookRef = useRef(null);
   const overlayRef = useRef(null);
   const [bookOpen, setBookOpen] = useState(false);
@@ -459,19 +464,18 @@ export default function BirthdayGift() {
   const leafRefs = useRef([]);
   const sparklesSpawned = useRef(false);
 
-  // Di mode 1-halaman, "selesai" saat sudah melewati halaman terakhir.
-  // Di mode spread, halaman terakhir buku ada di SISI BELAKANG lembar terakhir,
-  // jadi kita butuh satu langkah tambahan (flipped = TOTAL_LEAVES) supaya sisi
-  // belakang itu terlihat utuh dulu; layar tutup baru muncul setelahnya
-  // (flipped = TOTAL_LEAVES + 1).
-  const isFinished = bookOpen && (spread ? flipped > TOTAL_LEAVES : pageIdx >= TOTAL_PAGES);
+  // Mode 1-halaman: "selesai" saat sudah melewati sisi terakhir (PAGE_FACES).
+  // Mode spread: membalik lembar satu per satu; halaman penutup ada di SISI
+  // DEPAN lembar terakhir, jadi setelah TOTAL_LEAVES lembar terbalik tak ada
+  // lagi yang tersisa -> layar tutup muncul.
+  const isFinished = bookOpen && (spread ? flipped >= TOTAL_LEAVES : pageIdx >= TOTAL_PAGES);
 
   // Progres 0..1 sesuai mode
   const progress = spread
-    ? Math.min(1, flipped / TOTAL_LEAVES)
+    ? Math.min(1, flipped / Math.max(1, TOTAL_LEAVES - 1))
     : pageIdx / TOTAL_PAGES;
   const canPrev = spread ? flipped > 0 : pageIdx > 0;
-  const canNext = spread ? flipped <= TOTAL_LEAVES : pageIdx < TOTAL_PAGES;
+  const canNext = spread ? flipped < TOTAL_LEAVES : pageIdx < TOTAL_PAGES;
 
   // ---------- Layout size ----------
   const sizeBook = useCallback(() => {
@@ -562,15 +566,13 @@ export default function BirthdayGift() {
 
   const flipNext = useCallback(() => {
     if (spread) {
-      // Mode 2-halaman: maju 1 lembar. Boleh sampai TOTAL_LEAVES + 1 supaya
-      // sisi belakang lembar terakhir (halaman penutup) tampil utuh dulu,
-      // baru setelahnya masuk layar tutup (isFinished).
+      // Mode 2-halaman: maju 1 lembar. Lembar terakhir (halaman penutup) hanya
+      // punya sisi depan tanpa sisi belakang, jadi tak ada yang bisa
+      // dianimasikan -> langsung ke layar tutup (isFinished).
       setFlipped((f) => {
-        if (f <= TOTAL_LEAVES) {
-          if (f < TOTAL_LEAVES) markFlipping(f);
-          return f + 1;
-        }
-        return f;
+        if (f >= TOTAL_LEAVES) return f;
+        if (f < TOTAL_LEAVES - 1) markFlipping(f);
+        return f + 1;
       });
     } else {
       // Mode 1-halaman: maju 1 halaman (sisi)
@@ -757,16 +759,12 @@ export default function BirthdayGift() {
   };
 
   // ---------- MODE 1 HALAMAN: render TEPAT SATU sisi halaman ----------
-  // pageIdx: 0..TOTAL_PAGES-1. leaf = floor(pageIdx/2), sisi = pageIdx%2.
-  // Halaman dirender datar (tanpa rotasi 3D) supaya tidak ada "sliver"
-  // halaman lain yang menyembul di tepi. Semua 6 halaman tampil satu-satu.
+  // pageIdx: 0..TOTAL_PAGES-1 memetakan langsung ke PAGE_FACES (daftar datar
+  // semua sisi), jadi berapa pun sisi per lembar, semua halaman tetap tampil.
   const renderSinglePage = () => {
     if (pageIdx >= TOTAL_PAGES) return null; // sudah lewat halaman terakhir -> layar tutup
-    const leafIdx = Math.floor(pageIdx / 2);
-    const faceIdx = pageIdx % 2; // 0 = depan, 1 = belakang
-    const leaf = LEAVES[leafIdx];
-    if (!leaf || !leaf[faceIdx]) return null;
-    const face = leaf[faceIdx];
+    const face = PAGE_FACES[pageIdx];
+    if (!face) return null;
     return (
       <div
         className={`single-page ${face.className} slide-${slideDir > 0 ? "next" : "prev"}`}
